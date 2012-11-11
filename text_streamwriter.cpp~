@@ -1,0 +1,42 @@
+#include <iostream>
+#include <typeinfo>
+
+#include "text_streamwriter.hpp"
+
+TextStreamWriter::TextStreamWriter()
+{
+}
+
+TextStreamWriter::TextStreamWriter(std::ostream& m_stream)
+{
+  stream = m_stream;
+}
+
+TextStreamWriter::~TextStreamWriter()
+{
+}
+
+void TextStreamWriter::write_type_and_delim(const T & data)
+{
+
+}
+
+TextStreamWriter& TextStreamWriter::operator<<(const char & char_data)
+{
+stream<<typeid(char).name()<<char_data<<endl;
+}
+
+TextStreamWriter& TextStreamWriter::operator<<(const int & int_data)
+{
+stream<<typeid(int).name()<<int_data<<endl;
+}
+
+TextStreamWriter& TextStreamWriter::operator<<(const double & double_data)
+{
+stream<<typeid(double).name()<<double_data<<endl;
+}
+
+TextStreamWriter& TextStreamWriter::operator<<(const std::string & string_data)
+{
+  
+}

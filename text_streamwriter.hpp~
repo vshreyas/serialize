@@ -1,0 +1,14 @@
+// binary_streamwriter.hpp
+// Write object to stream without modifying given object
+class BinaryStreamWriter: public StreamWriter
+{
+public:
+  BinaryStreamWriter();
+  BinaryStreamWriter(std::ostream&);
+  ~BinaryStreamWriter();
+
+  BinaryStreamWriter& operator<<(const char &);
+  BinaryStreamWriter& operator<<(const int &);
+  BinaryStreamWriter& operator<<(const double &);
+  BinaryStreamWriter& operator<<(const string &);
+};

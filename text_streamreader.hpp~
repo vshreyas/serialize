@@ -1,0 +1,14 @@
+// binary_streamreader.hpp
+// Read from stream and store into object
+class BinaryStreamReader: public StreamReader
+{
+public:
+  BinaryStreamReader();
+  BinaryStreamReader(const std::istream&);
+  ~BinaryStreamReader();
+
+  BinaryStreamReader& operator>>(char &);
+  BinaryStreamReader& operator>>(int &);
+  BinaryStreamReader& operator>>(double &);
+  BinaryStreamReader& operator>>(string &);
+};
