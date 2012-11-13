@@ -18,6 +18,7 @@ public:
 
   TextStreamWriter& operator<<(const char &);
   TextStreamWriter& operator<<(const int &);
+  TextStreamWriter& operator<<(const float &);
   TextStreamWriter& operator<<(const double &);
   TextStreamWriter& operator<<(const std::string &);
 

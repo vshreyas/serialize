@@ -28,6 +28,12 @@ TextStreamWriter& TextStreamWriter::operator<<(const int & int_data)
   return *this;
 }
 
+TextStreamWriter& TextStreamWriter::operator<<(const float & float_data)
+{
+  *stream<<type_and_delim(float_data)<<float_data<<endl;
+  return *this;
+}
+
 TextStreamWriter& TextStreamWriter::operator<<(const double & double_data)
 {
   *stream<<type_and_delim(double_data)<<double_data<<endl;
