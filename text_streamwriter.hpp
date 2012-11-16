@@ -15,25 +15,76 @@ public:
   TextStreamWriter();
   TextStreamWriter(std::ostream&);
   ~TextStreamWriter();
+  
+  template <typename T>
+  typename std::enable_if<std::is_fundamental<T>::value,TextStreamWriter&>::type
+  operator<<(const T & T_data)
+  {
+    write_type(T_data);
+    write_data(T_data);
 
-  TextStreamWriter& operator<<(const char &);
-  TextStreamWriter& operator<<(const int &);
-  TextStreamWriter& operator<<(const float &);
-  TextStreamWriter& operator<<(const double &);
-  TextStreamWriter& operator<<(const std::string &);
+    return *this;
+  }
 
+  TextStreamWriter& operator<<(const std::string & string_data)
+  {
+    write_type(string_data);
+    write_data(string_data);
+
+    return *this;
+  }
+  
+  template <typename T>
+  typename std::enable_if<std::is_class<T>::value,TextStreamWriter&>::type
+  operator<<(const T & T_data)
+  {
+    write_type(T_data);
+    write_data(*this, T_data);
+
+    return *this;
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_array<T>::value,TextStreamWriter&>::type
+  operator<<(const T & T_data)
+  {
+    write_type(T_data);
+    *this<<(sizeof(T_data)/sizeof(T_data[0]));
+    for (unsigned int i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
+      write_data(T_data[i]);
+
+    return *this;
+  }
+  
 private:
   template <class T>
-  std::string type_and_delim(const T &);
+  std::string type_and_delim(const T &)
+  {
+    return std::string(typeid(T).name()) + " ";
+  }
+
+  template <class T>
+  void write_type(const T & T_data)
+  {
+    // Assuming no type name contains a word/string terminator, no
+    // need to store length
+    std::string type_as_string(typeid(T_data).name());
+    *stream<<type_as_string<<" ";
+  }
+
+  template <class T>
+  void write_data(const T & T_data)
+  {
+    *stream<<T_data<<std::endl;
+  }
+
+  void write_data(const std::string& string_data)
+  {
+    *stream<<string_data.size()<<" "<<string_data<<std::endl;
+  }
   
   std::ostream* stream;
 };
-
-template <class T>
-std::string TextStreamWriter::type_and_delim(const T & data)
-{
-  return std::string(typeid(T).name()) + " ";
-}
 
 #endif // TEXT_STREAMWRITER_HPP
 
