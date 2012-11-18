@@ -56,7 +56,6 @@ private:
     size_t array_size = sizeof(T_array_data)/element_size;
     size_t stored_array_size;
 
-    //std::cout<<"Reading array size...\n";
     *this>>stored_array_size;
     if (stored_array_size != array_size)
       {

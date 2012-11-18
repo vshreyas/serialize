@@ -21,45 +21,57 @@ public:
 
   void set_int_mem(int i) { int_mem = i; }
   void set_string_mem(string s) { string_mem = s; }
-  
-  friend void serialize(TextStreamWriter& writer, const myclass& cls);
-  friend void deserialize(TextStreamReader& reader, myclass& cls);
+
+  template <class Writer>
+  friend void serialize(Writer& writer, const myclass& cls);
+  template <class Reader>
+  friend void deserialize(Reader& reader, myclass& cls);
 };
 
-void serialize(TextStreamWriter& writer, const myclass& cls)
+template <class Writer>
+void serialize(Writer& writer, const myclass& cls)
 {
   writer<<cls.int_mem;
   writer<<cls.string_mem;
 }
 
-void deserialize(TextStreamReader& reader, myclass& cls)
+template <class Reader>
+void deserialize(Reader& reader, myclass& cls)
 {
   reader>>cls.int_mem;
   reader>>cls.string_mem;
 }
 
-class d_myclass: public myclass
+class derived_myclass: public myclass
 {
 private:
   float float_mem;
   char char_mem;
 public:
-  d_myclass(): myclass(), float_mem(2124.35), char_mem('A') { }
+  derived_myclass(): myclass(), float_mem(2124.35), char_mem('A') { }
   void set_float_mem(float f) { float_mem = f; }
   void set_char_mem(char c) { char_mem = c; }
 
-  friend void serialize(TextStreamWriter& writer, const d_myclass& cls);
-  friend void deserialize(TextStreamReader& writer, d_myclass& cls);
+
+  template <class Writer>
+  friend void serialize(Writer& writer, const derived_myclass& cls);
+
+  //friend void deserialize(StreamReader& reader, derived_myclass& cls);
+  
+  template <class Reader>
+  friend void deserialize(Reader& reader, derived_myclass& cls);
 };
 
-void serialize(TextStreamWriter& writer, const d_myclass& cls)
+template <class Writer>
+void serialize(Writer& writer, const derived_myclass& cls)
 {
   writer<<static_cast<const myclass>(cls);
   writer<<cls.float_mem;
   writer<<cls.char_mem;
 }
 
-void deserialize(TextStreamReader& reader, d_myclass& cls)
+template <class Reader>
+void deserialize(Reader& reader, derived_myclass& cls)
 {
   reader>>*static_cast<myclass*>(&cls);
   reader>>cls.float_mem;
@@ -70,7 +82,7 @@ int main()
 {
   char char_data = 'C';
   int int_data = 225;
-  double double_data = 351.258935;
+  double double_data = 351258935;
   int int_array[10] = {1,2,3,4,5,6,7,8,9,10};
   string str_array[] = {"abc", "another one", "third\none", "fourth"};
   //string string_data = "this is a string.";
@@ -78,7 +90,7 @@ int main()
   myclass cls;
   cls.set_int_mem(314);
   cls.set_string_mem("fde");
-  d_myclass d_cls;
+  derived_myclass d_cls;
   d_cls.set_int_mem(3512);
   d_cls.set_string_mem("dfnwej");
   
@@ -94,12 +106,11 @@ int main()
   int int_array_read[10];
   string str_array_read[4];
   myclass cls_read;
-  d_myclass d_cls_read;
+  derived_myclass d_cls_read;
   
   ifstream is("out.txt");
   TextStreamReader reader(is);
   reader>>char_read>>int_read>>double_read>>string_read>>int_array_read>>str_array_read>>cls_read>>d_cls_read;
-  cout<<"int mem of derived = "<<d_cls_read.int_mem<<endl;
   is.close();
   
   if (char_read != char_data)
@@ -108,13 +119,8 @@ int main()
     cout<<"Read int: "<<int_read<<" | Expected int: "<<int_data<<endl;
   if (double_read != double_data)
     cout<<"Read double: "<<double_read<<" | Expected double: "<<double_data<<endl;
-
   if (string_read != string_data)
     cout<<"Read string: "<<string_read<<" | Expected string: "<<string_data<<endl;
 
-
-  //cout<<"Type of myclass is: "<<typeid((myclass<int>*) new myclass<int>()).name()<<endl;
-  cout<<"type of myclass:"<<typeid(myclass).name()<<endl;
-  cout<<"Type of int* is: "<<typeid(int*).name()<<endl;
   return 0;
 }
