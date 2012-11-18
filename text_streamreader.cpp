@@ -14,6 +14,7 @@ TextStreamReader::~TextStreamReader()
 {
 }
 
+/*
 TextStreamReader& TextStreamReader::operator>>(char & char_data)
 {
   if (read_and_check_types(char_data))
@@ -48,3 +49,4 @@ TextStreamReader& TextStreamReader::operator>>(string & string_data)
   delete[] s;
   return *this;
 }
+*/

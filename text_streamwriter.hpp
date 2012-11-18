@@ -39,7 +39,7 @@ public:
   operator<<(const T & T_data)
   {
     write_type(T_data);
-    write_data(*this, T_data);
+    serialize(*this, T_data);
 
     return *this;
   }
@@ -49,9 +49,10 @@ public:
   operator<<(const T & T_data)
   {
     write_type(T_data);
+    // number of elements
     *this<<(sizeof(T_data)/sizeof(T_data[0]));
-    for (unsigned int i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
-      write_data(T_data[i]);
+    for (size_t i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
+      *this<<T_data[i];
 
     return *this;
   }
