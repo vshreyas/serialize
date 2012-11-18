@@ -9,52 +9,44 @@
 
 #include "streamwriter.hpp"
 
-class TextStreamWriter
+class TextStreamWriter: public StreamWriter
 {
 public:
-  TextStreamWriter();
+  //TextStreamWriter();
   TextStreamWriter(std::ostream&);
   ~TextStreamWriter();
   
   template <typename T>
-  typename std::enable_if<std::is_fundamental<T>::value,TextStreamWriter&>::type
-  operator<<(const T & T_data)
+  typename std::enable_if<std::is_fundamental<T>::value>::type
+  save(const T & T_data)
   {
     write_type(T_data);
     write_data(T_data);
-
-    return *this;
   }
 
-  TextStreamWriter& operator<<(const std::string & string_data)
+  void save(const std::string & string_data)
   {
     write_type(string_data);
     write_data(string_data);
-
-    return *this;
   }
   
   template <typename T>
-  typename std::enable_if<std::is_class<T>::value,TextStreamWriter&>::type
-  operator<<(const T & T_data)
+  typename std::enable_if<std::is_class<T>::value>::type
+  save(const T & T_data)
   {
     write_type(T_data);
-    serialize(*this, T_data);
-
-    return *this;
+    //serialize(*this, T_data);
   }
 
   template <typename T>
-  typename std::enable_if<std::is_array<T>::value,TextStreamWriter&>::type
-  operator<<(const T & T_data)
+  typename std::enable_if<std::is_array<T>::value>::type
+  save(const T & T_data)
   {
     write_type(T_data);
     // number of elements
     *this<<(sizeof(T_data)/sizeof(T_data[0]));
     for (size_t i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
       *this<<T_data[i];
-
-    return *this;
   }
   
 private:
@@ -83,8 +75,6 @@ private:
   {
     *stream<<string_data.size()<<" "<<string_data<<std::endl;
   }
-  
-  std::ostream* stream;
 };
 
 #endif // TEXT_STREAMWRITER_HPP

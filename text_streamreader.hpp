@@ -9,39 +9,32 @@
 
 #include "streamreader.hpp"
 
-class TextStreamReader
+class TextStreamReader: public StreamReader
 {
 public:
-  TextStreamReader();
   TextStreamReader(std::istream &);
   ~TextStreamReader();
 
   template <typename T>
-  typename std::enable_if<!std::is_class<T>::value,TextStreamReader&>::type
-  operator>>(T & T_data)
+  typename std::enable_if<!std::is_class<T>::value>::type
+  load(T & T_data)
   {
     read_and_check_types(T_data);
     read_data(T_data);
-
-    return *this;
   }
 
   template <typename T>
-  typename std::enable_if<std::is_class<T>::value,TextStreamReader&>::type
-  operator>>(T & T_data)
+  typename std::enable_if<std::is_class<T>::value>::type
+  load(T & T_data)
   {
     read_and_check_types(T_data);
-    deserialize(*this, T_data);
-
-    return *this;
+    // Reading of data left to `deserialize'
   }
 
-  TextStreamReader& operator>>(std::string & string_data)
+  void load(std::string & string_data)
   {
     read_and_check_types(string_data);
     read_data(string_data);
-
-    return *this;
   }
   
 private:
@@ -89,8 +82,6 @@ private:
     string_data = std::string(s, len);
     delete[] s;
   }
-
-  std::istream* stream;
 };
 
 template <class T>

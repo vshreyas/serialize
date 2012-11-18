@@ -4,11 +4,7 @@
 
 using namespace std;
 
-TextStreamWriter::TextStreamWriter(): stream(0)
-{
-}
-
-TextStreamWriter::TextStreamWriter(ostream& m_stream): stream(&m_stream)
+TextStreamWriter::TextStreamWriter(ostream& m_stream): StreamWriter(m_stream)
 {
 }
 

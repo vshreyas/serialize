@@ -2,11 +2,7 @@
 
 using namespace std;
 
-TextStreamReader::TextStreamReader(): stream(0)
-{
-}
-
-TextStreamReader::TextStreamReader(istream & m_stream): stream(&m_stream)
+TextStreamReader::TextStreamReader(istream & m_stream): StreamReader(m_stream)
 {
 }
 
