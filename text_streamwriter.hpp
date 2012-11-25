@@ -39,6 +39,15 @@ public:
   }
 
   template <typename T>
+  typename std::enable_if<std::is_polymorphic<T>::value>::type
+  save(T* T_data)
+  {
+    write_type(*T_data);
+    write_type(*T_data);
+    //serialize(*this, T_data);
+  }
+  
+  template <typename T>
   typename std::enable_if<std::is_array<T>::value>::type
   save(const T & T_data)
   {

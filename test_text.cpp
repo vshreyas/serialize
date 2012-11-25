@@ -123,11 +123,11 @@ int main()
   ifstream is("out.txt");
   TextStreamReader reader(is);
 
-  //vinfo.push_back(new info<TextStreamReader,myclass>(reader));
-  //vinfo.push_back(new info<TextStreamReader,derived_myclass>(reader));
+  vinfo.push_back(new info<TextStreamReader,myclass>(reader));
+  vinfo.push_back(new info<TextStreamReader,derived_myclass>(reader));
   
   myclass* bptrempty;
-  reader>>d_cls_read;
+  reader>>bptrempty;
   reader>>char_read>>int_read>>double_read>>string_read>>int_array_read>>str_array_read>>cls_read>>d_cls_read;
   //reader>>d_cls_read;
   is.close();

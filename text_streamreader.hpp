@@ -31,21 +31,23 @@ public:
     read_and_check_types(T_data);
     // Reading of data left to `deserialize'
   }
-  /*
+
+  
   template <typename T>
   typename std::enable_if
-  <!std::is_class<T>::value && std::is_polymorphic<T>::value>::type
+  <std::is_polymorphic<T>::value>::type
   load(T* & T_data)
   {
     std::string type_name;
     // proper code for reading type name
     *stream>>type_name;
     info_base* actual_type_info = get_type_from_key(type_name);
-    void* actual_obj = actual_type_info->construct();
+    T_data = static_cast<T*>(actual_type_info->call_deserialize());
+    /*void* actual_obj = actual_type_info->construct();
     read_data(actual_obj);
-    T_data = actual_obj;
+    T_data = actual_obj;*/
   }
-  */
+  
   void load(std::string & string_data)
   {
     read_and_check_types(string_data);

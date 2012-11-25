@@ -1,4 +1,4 @@
-15derived_myclass 7myclass i 3512
+15derived_myclass 15derived_myclass 7myclass i 3512
 Ss 6 dfnwej
 f 2124.35
 c A

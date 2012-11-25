@@ -92,11 +92,12 @@ typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
 operator>>(Reader & reader, T* & T_data)
 {
   // T is of pointer type. Assume polymorphic
-  get_matching_type(T_data)->call_serialize(T_data);
-  /*reader.save(T_data);
-    serialize(reader, T_data);*/
+  reader.load(T_data);
+  //reader.save(T_data);
+  //serialize(reader, T_data);
   return reader;
 }
+
 
 /** 
  * Default implementation which should do nothing. The user must

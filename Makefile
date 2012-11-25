@@ -1,12 +1,12 @@
 all:
-	g++ common.cpp streamreader.cpp streamwriter.cpp text_streamreader.cpp text_streamwriter.cpp test_text.cpp -o test_text.o --std=c++11 -g -Wextra
+	g++ common.cpp streamreader.cpp streamwriter.cpp text_streamreader.cpp text_streamwriter.cpp test_text.cpp -o xtest.o --std=c++11 -g -Wextra
 
 cl:
-	clang++ common.cpp streamreader.cpp streamwriter.cpp text_streamreader.cpp text_streamwriter.cpp test_text.cpp -o test_text.o --std=c++11 -g -Wextra
+	clang++ common.cpp streamreader.cpp streamwriter.cpp text_streamreader.cpp text_streamwriter.cpp test_text.cpp -o xtest.o --std=c++11 -g -Wextra
 
 r:
-	make all && ./test_text.o; cat out.txt
+	make all && ./xtest.o; cat out.txt
 
 uninstall:
-	rm test_text.o
+	rm xtest.o
 
