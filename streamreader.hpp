@@ -86,6 +86,18 @@ operator>>(Reader & reader, T & T_data)
   return reader;
 }
 
+template <typename Reader, typename T>
+typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
+&& std::is_polymorphic<T>::value, Reader&>::type
+operator>>(Reader & reader, T* & T_data)
+{
+  // T is of pointer type. Assume polymorphic
+  get_matching_type(T_data)->call_serialize(T_data);
+  /*reader.save(T_data);
+    serialize(reader, T_data);*/
+  return reader;
+}
+
 /** 
  * Default implementation which should do nothing. The user must
  * define specialized functions for their classes, which will

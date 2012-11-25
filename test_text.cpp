@@ -1,3 +1,4 @@
+#include "types.hpp"
 #include "text_streamreader.hpp"
 #include "text_streamwriter.hpp"
 
@@ -19,6 +20,8 @@ public:
 	     string_mem("this is my string member!\n\nYou should see two new lines.")
   { }
 
+  virtual ~myclass() { }
+  
   void set_int_mem(int i) { int_mem = i; }
   void set_string_mem(string s) { string_mem = s; }
 
@@ -96,7 +99,16 @@ int main()
   
   ofstream os("out.txt");
   TextStreamWriter writer(os);
+  
+  vinfo.push_back(new info<TextStreamWriter,myclass>(writer));
+  vinfo.push_back(new info<TextStreamWriter,derived_myclass>(writer));
+
+  myclass* bptrtod = &d_cls;
+  //get_matching_type(bptrtod)->call_serialize(bptrtod);
+
+  writer<<bptrtod;
   writer<<char_data<<int_data<<double_data<<string_data<<int_array<<str_array<<cls<<d_cls;
+  writer<<d_cls;
   os.close();
 
   char char_read;
@@ -110,7 +122,14 @@ int main()
   
   ifstream is("out.txt");
   TextStreamReader reader(is);
+
+  //vinfo.push_back(new info<TextStreamReader,myclass>(reader));
+  //vinfo.push_back(new info<TextStreamReader,derived_myclass>(reader));
+  
+  myclass* bptrempty;
+  reader>>d_cls_read;
   reader>>char_read>>int_read>>double_read>>string_read>>int_array_read>>str_array_read>>cls_read>>d_cls_read;
+  //reader>>d_cls_read;
   is.close();
   
   if (char_read != char_data)

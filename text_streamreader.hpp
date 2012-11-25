@@ -7,6 +7,7 @@
 #include <string>
 #include <typeinfo>
 
+#include "types.hpp"
 #include "streamreader.hpp"
 
 class TextStreamReader: public StreamReader
@@ -30,7 +31,21 @@ public:
     read_and_check_types(T_data);
     // Reading of data left to `deserialize'
   }
-
+  /*
+  template <typename T>
+  typename std::enable_if
+  <!std::is_class<T>::value && std::is_polymorphic<T>::value>::type
+  load(T* & T_data)
+  {
+    std::string type_name;
+    // proper code for reading type name
+    *stream>>type_name;
+    info_base* actual_type_info = get_type_from_key(type_name);
+    void* actual_obj = actual_type_info->construct();
+    read_data(actual_obj);
+    T_data = actual_obj;
+  }
+  */
   void load(std::string & string_data)
   {
     read_and_check_types(string_data);
@@ -89,9 +104,9 @@ bool TextStreamReader::read_and_check_types(const T & data)
   std::string serialized_type_name;
   *stream>>serialized_type_name;
   //std::cout<<"Read type: "<<serialized_type_name<<", expected:"<<typeid(data).name()<<std::endl;
-  if (serialized_type_name != typeid(data).name())
+  if (serialized_type_name != typeid(T).name())
     {
-      std::cout<<"Types: Expected: "<<typeid(data).name()<< ", and Present: "<<serialized_type_name<<" do not match!\n";
+      std::cout<<"Types: Expected: "<<typeid(T).name()<< ", and Present: "<<serialized_type_name<<" do not match!\n";
       return false;
     }
   return true;

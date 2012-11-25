@@ -2,6 +2,7 @@
 #define STREAMWRITER_HPP
 
 #include "common.hpp"
+#include "types.hpp"
 
 #include <iostream>
 
@@ -24,12 +25,24 @@ protected:
 };
 
 template <typename Writer, typename T>
-typename std::enable_if<std::is_base_of<StreamWriter, Writer>::value, Writer&>::type
+typename std::enable_if <std::is_base_of<StreamWriter, Writer>::value, Writer&>::type
 operator<<(Writer & writer, const T & T_data)
 {
   // For classes, `save' should rely on `serialize' to write the members
   writer.save(T_data);
   serialize(writer, T_data);
+  return writer;
+}
+
+template <typename Writer, typename T>
+typename std::enable_if <std::is_base_of<StreamWriter, Writer>::value
+&& std::is_polymorphic<T>::value, Writer&>::type
+operator<<(Writer & writer, T* T_data)
+{
+  // T is of pointer type. Assume polymorphic
+  get_matching_type(T_data)->call_serialize(T_data);
+  /*writer.save(T_data);
+    serialize(writer, T_data);*/
   return writer;
 }
 

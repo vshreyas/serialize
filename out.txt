@@ -1,3 +1,7 @@
+15derived_myclass 7myclass i 3512
+Ss 6 dfnwej
+f 2124.35
+c A
 c C
 i 225
 d 3.51259e+08
@@ -22,6 +26,10 @@ one
 Ss 6 fourth
 7myclass i 314
 Ss 3 fde
+15derived_myclass 7myclass i 3512
+Ss 6 dfnwej
+f 2124.35
+c A
 15derived_myclass 7myclass i 3512
 Ss 6 dfnwej
 f 2124.35
