@@ -3,25 +3,33 @@
 
 #include "common.hpp"
 #include <iostream>
+#include <string>
 #include <typeinfo>
-#include <vector>
-
+#include <map>
 
 class StreamReader;
 class StreamWriter;
+class info_base;
 
+static std::map<std::string,info_base*> info_class_name_map;
+static std::map<std::string,info_base*> info_typeid_name_map;
 
+#define REGISTER_TYPE(type)						\
+  info_class_name_map[#type] = new info_base<type>(#type);		\
+  info_typeid_name_map[typeid(type).name()] = new info_base<type>(#type); \
+  
 class info_base
 {
 public:
-  virtual bool is_same_type(void* other, const std::type_info& id_info)
+  info_base(std::string m_key): key(m_key) { }
+  
+  virtual bool is_same_type(const std::type_info& id_info)
   {
     NOT_IMPLEMENTED("is_same_type!\n");
   }
+  
   virtual void* construct() = 0;
-
-  virtual std::string key() = 0;
-
+  virtual std::string key() { return key; }
   virtual void call_serialize(void* other)
   {
     NOT_IMPLEMENTED("Called serialize of base class!\n");
@@ -42,17 +50,13 @@ public:
   virtual std::string key() { NOT_IMPLEMENTED("generic info key!\n"); }
 };
 
-template <class Writer, class T>
-class info<Writer, T,
-	   typename std::enable_if<std::is_base_of<StreamWriter, Writer>::value>::type>
-  : public info_base
+template <class T>
+class info: public info_base
 {
 public:
-  info(Writer &w): writer(&w) { }
-  
-  Writer* writer;
-  
-  virtual bool is_same_type(void* other, const std::type_info& id_info)
+  info(string m_key): info_base(m_key) { }
+
+  virtual bool is_same_type(const std::type_info& id_info)
   {
     return (typeid(T) == id_info);
   }
