@@ -2,6 +2,7 @@
 #define _TYPES_HPP
 
 #include "common.hpp"
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <typeinfo>
@@ -9,19 +10,22 @@
 
 class StreamReader;
 class StreamWriter;
-class info_base;
+class InfoBase;
 
-static std::map<std::string,info_base*> info_class_name_map;
-static std::map<std::string,info_base*> info_typeid_name_map;
+using namespace std;
 
-#define REGISTER_TYPE(type)						\
-  info_class_name_map[#type] = new info_base<type>(#type);		\
-  info_typeid_name_map[typeid(type).name()] = new info_base<type>(#type); \
-  
-class info_base
+/*
+static std::map<std::string,InfoBase*> info_class_name_map;
+static std::map<std::string,InfoBase*> info_typeid_name_map;
+*/
+
+#define REGISTER_TYPE(writer,type)					\
+  register_type(writer,new Info< type > (string(#type)) );		\
+
+class InfoBase
 {
 public:
-  info_base(std::string m_key): key(m_key) { }
+  InfoBase(const string & _key): m_key{_key} { }
   
   virtual bool is_same_type(const std::type_info& id_info)
   {
@@ -29,44 +33,24 @@ public:
   }
   
   virtual void* construct() = 0;
-  virtual std::string key() { return key; }
-  virtual void call_serialize(void* other)
-  {
-    NOT_IMPLEMENTED("Called serialize of base class!\n");
-  }
 
-  virtual void* call_deserialize()
-  {
-    NOT_IMPLEMENTED("Called deserialize of base class!\n");
-    return NULL;
-  }
-};
+  virtual std::string key() { return m_key; }
 
-template <class Writer, class T, class Enable = void>
-class info: public info_base
-{
-public:
-  virtual void* construct() { NOT_IMPLEMENTED("generic info construct!\n"); }
-  virtual std::string key() { NOT_IMPLEMENTED("generic info key!\n"); }
+private:
+  string m_key;
 };
 
 template <class T>
-class info: public info_base
+class Info: public InfoBase
 {
 public:
-  info(string m_key): info_base(m_key) { }
+  Info(const string &_key): InfoBase(_key) { }
 
   virtual bool is_same_type(const std::type_info& id_info)
   {
     return (typeid(T) == id_info);
   }
 
-  virtual std::string key()
-  {
-    //return ((std::string) typeid(T).name());
-    return "";
-  }
-  
   template <class Other>
   T cast(Other other) { return dynamic_cast<T>(other); }
   
@@ -74,63 +58,11 @@ public:
   {
     return new T;
   }
-
-  virtual void call_serialize(void* other)
-  {
-    // call save on the pointer so we can specialize
-    writer->save(static_cast<T*>(other));
-    // call regular serialize
-    serialize(*writer, *static_cast<T*>(other));
-  }
 };
 
-template <class Reader, class T>
-class info<Reader, T,
-	   typename std::enable_if<std::is_base_of<StreamReader, Reader>::value>::type>
-  : public info_base
-{
-public:
-  info(Reader &w): reader(&w) { }
-  
-  Reader* reader;
-  
-  virtual bool is_same_type(void* other, const std::type_info& id_info)
-  {
-    return (typeid(T) == id_info);
-  }
-
-  virtual std::string key()
-  {
-    return ((std::string) typeid(T).name());
-  }
-  
-  template <class Other>
-  T cast(Other other) { return dynamic_cast<T>(other); }
-  
-  virtual void* construct()
-  {
-    return new T;
-  }
-
-  virtual void* call_deserialize()
-  {
-    T* actual_obj_ptr = static_cast<T*>(construct());
-
-    // call load on the pointer - allows us to specialize
-    reader->load(*actual_obj_ptr);
-
-    // deserialize on the object
-    deserialize(*reader, *actual_obj_ptr);
-
-    return actual_obj_ptr;
-  }
-
-};
-
-static std::vector<info_base*> vinfo;
-
+/*
 template <class X>
-info_base* get_matching_type(X obj)
+InfoBase* get_matching_type(X obj)
 {
   for (size_t i = 0; i < vinfo.size(); ++i)
     if (vinfo[i]->is_same_type(obj, typeid(*obj)))
@@ -141,7 +73,7 @@ info_base* get_matching_type(X obj)
   return NULL;
 }
 
-inline info_base* get_type_from_key(std::string type_key)
+inline InfoBase* get_type_from_key(std::string type_key)
 {
   for (size_t i = 0; i < vinfo.size(); ++i)
     if (vinfo[i]->key() == type_key)
@@ -151,5 +83,110 @@ inline info_base* get_type_from_key(std::string type_key)
       }
   return NULL;
 }
+*/
+
+// Initialize the vector
+template <class Writer>
+class TiedInfoBase
+{
+public:
+  TiedInfoBase() { }
+  
+  virtual ~TiedInfoBase() { }
+
+  string key() { return get_key(); }
+  
+  bool is_same_type(void* other, const std::type_info & id_info)
+  {
+    cout<<"In is_same_type. Given type name: "<<id_info.name()<<"\n";
+    return check_if_same_type(other, id_info);
+  }
+  
+  void call_serialize(Writer & writer, void* other)
+  {
+    cast_and_call_serialize(writer, other);
+  }
+
+private:
+
+  virtual string get_key()
+  {
+    NOT_IMPLEMENTED("not implemented get_key() called!"); return "";
+  }
+  
+  virtual void cast_and_call_serialize(Writer & writer, void* other)
+  {
+    NOT_IMPLEMENTED("Not implemented cast_and_call_serialize called!\n");
+  }
+  
+  virtual bool check_if_same_type(void* other, const std::type_info & id_info)
+  {
+    NOT_IMPLEMENTED("Not implemented check_if_same_type called!\n");
+  }
+};
+
+template <class Writer,class InfoType>
+class TiedInfo: public TiedInfoBase<Writer>
+{
+public:
+  TiedInfo(Info<InfoType> _info): TiedInfoBase<Writer>(), m_info(_info) { }
+
+private:
+
+  virtual string get_key() { return m_info.key(); }
+  
+  virtual void cast_and_call_serialize(Writer & writer, void* other)
+  {
+    // call save on the pointer so we can specialize
+    writer.save(static_cast<InfoType*>(other));
+    // call regular serialize
+    serialize(writer, *static_cast<InfoType*>(other));
+  }
+
+  virtual bool check_if_same_type(void* other, const std::type_info & id_info)
+  {
+    return m_info.is_same_type(id_info);
+  }
+
+  Info<InfoType> m_info;
+};
+
+template <class Writer>
+struct InfoList
+{
+  using ptr_type = TiedInfoBase<Writer>*;
+
+  static vector<ptr_type> info_list;
+
+  static void add_type(ptr_type tied_info)
+  {
+    // check if type exists already first
+    info_list.push_back(tied_info);
+  }
+
+  template <class GivenType>
+  static ptr_type get_matching_type(GivenType obj)
+  {
+    /*auto found_item = find_if(info_list.begin(), info_list.end(),
+			      [&obj] (ptr_type elem) {
+				return elem->is_same_type(obj, typeid(*obj));
+				});*/
+
+    for (size_t i = 0; i < info_list.size(); ++i)
+      {
+	if (info_list[i]->is_same_type(obj,typeid(*obj)))
+	  return info_list[i];
+      }
+
+    return nullptr;
+
+    /*if (found_item == info_list.end())
+      return nullptr;
+      return *found_item;*/
+  }
+};
+
+template <class Writer>
+vector<TiedInfoBase<Writer>*> InfoList<Writer>::info_list {};
 
 #endif // _TYPES_HPP

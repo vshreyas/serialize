@@ -42,8 +42,8 @@ public:
   typename std::enable_if<std::is_polymorphic<T>::value>::type
   save(T* T_data)
   {
-    write_type(*T_data);
-    write_type(*T_data);
+    write_type(T_data);
+    write_type(T_data);
     //serialize(*this, T_data);
   }
   
@@ -63,6 +63,14 @@ private:
   std::string type_and_delim(const T &)
   {
     return std::string(typeid(T).name()) + " ";
+  }
+
+  template <class T>
+  typename std::enable_if<std::is_polymorphic<T>::value>::type
+  write_type(T* & T_data)
+  {
+    std::string type_key(InfoList<TextStreamWriter>::get_matching_type(T_data)->key());
+    *stream<<type_key<<" ";
   }
 
   template <class T>

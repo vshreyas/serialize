@@ -86,6 +86,7 @@ operator>>(Reader & reader, T & T_data)
   return reader;
 }
 
+/*
 template <typename Reader, typename T>
 typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
 && std::is_polymorphic<T>::value, Reader&>::type
@@ -98,6 +99,7 @@ operator>>(Reader & reader, T* & T_data)
   return reader;
 }
 
+*/
 
 /** 
  * Default implementation which should do nothing. The user must
@@ -114,5 +116,4 @@ typename std::enable_if<std::is_base_of<StreamReader, Reader>::value>::type
 deserialize(Reader & reader, T & T_data)
 {
 }
-
 #endif

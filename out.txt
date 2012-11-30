@@ -1,36 +1,8 @@
-15derived_myclass 15derived_myclass 7myclass i 3512
-Ss 6 dfnwej
-f 2124.35
-c A
-c C
-i 225
-d 3.51259e+08
-Ss 8 saf
-dfew
-A10_i m 10
-i 1
-i 2
-i 3
-i 4
-i 5
-i 6
-i 7
-i 8
-i 9
-i 10
-A4_Ss m 4
-Ss 3 abc
-Ss 11 another one
-Ss 9 third
-one
-Ss 6 fourth
-7myclass i 314
-Ss 3 fde
-15derived_myclass 7myclass i 3512
-Ss 6 dfnwej
-f 2124.35
-c A
-15derived_myclass 7myclass i 3512
-Ss 6 dfnwej
-f 2124.35
-c A
+Derived<float> Derived<float> f 42.51
+Derived<string> Derived<string> Ss 6 hello!
+A5_P4Base m 5
+Derived<float> Derived<float> f 42.51
+Derived<string> Derived<string> Ss 6 hello!
+Derived<float> Derived<float> f 42.51
+Derived<float> Derived<float> f 42.51
+Derived<string> Derived<string> Ss 6 hello!

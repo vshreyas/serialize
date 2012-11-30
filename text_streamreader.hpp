@@ -32,7 +32,7 @@ public:
     // Reading of data left to `deserialize'
   }
 
-  
+  /*
   template <typename T>
   typename std::enable_if
   <std::is_polymorphic<T>::value>::type
@@ -43,10 +43,11 @@ public:
     *stream>>type_name;
     info_base* actual_type_info = get_type_from_key(type_name);
     T_data = static_cast<T*>(actual_type_info->call_deserialize());
-    /*void* actual_obj = actual_type_info->construct();
-    read_data(actual_obj);
-    T_data = actual_obj;*/
-  }
+
+    //void* actual_obj = actual_type_info->construct();
+    //read_data(actual_obj);
+    //T_data = actual_obj;
+  }*/
   
   void load(std::string & string_data)
   {
