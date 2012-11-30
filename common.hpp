@@ -9,6 +9,7 @@
  * 
  */
 
+#include "types.hpp"
 #include <string>
 
 /** 

@@ -1,8 +1,15 @@
-Derived<float> Derived<float> f 42.51
-Derived<string> Derived<string> Ss 6 hello!
-A5_P4Base m 5
-Derived<float> Derived<float> f 42.51
-Derived<string> Derived<string> Ss 6 hello!
-Derived<float> Derived<float> f 42.51
-Derived<float> Derived<float> f 42.51
-Derived<string> Derived<string> Ss 6 hello!
+14 Derived<float>
+42.51
+15 Derived<string>
+6 hello!
+5
+14 Derived<float>
+42.51
+15 Derived<string>
+6 hello!
+14 Derived<float>
+42.51
+14 Derived<float>
+42.51
+15 Derived<string>
+6 hello!

@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "text_streamwriter.hpp"
+#include "text_streamreader.hpp"
 
 using namespace std;
 
@@ -21,16 +22,28 @@ struct Derived: public Base
 };
 
 template <class Writer>
-void serialize(Writer & w, Base b)
+void serialize(Writer & w, const Base & b)
 {
   w<<b.b;
 }
 
 template <class Writer, class T>
-void serialize(Writer & w, Derived<T> d)
+void serialize(Writer & w, const Derived<T> & d)
 {
   w<<d.x;
 };
+
+template <class Reader>
+void deserialize(Reader & r, Base & b)
+{
+  r>>b.b;
+}
+
+template <class Reader, class T>
+void deserialize(Reader & r, Derived<T> & d)
+{
+  r>>d.x;
+}
 
 int main()
 {
@@ -41,10 +54,31 @@ int main()
   TextStreamWriter w(stream);
   REGISTER_TYPE(w,Derived<float>);
   REGISTER_TYPE(w,Derived<string>);
-  w<<b1;
+
+  w<<b1;			// w<<*(Derived<float>)*(b1)
   w<<b2;
 
-  Base* vec_b[] = {b1,b2,b1,b1,b2};
-  w<<vec_b;
+
+  Base* array_b[] = {b1,b2,b1,b1,b2};
+  w<<array_b;
+  stream.close();
+
+  ifstream readstream("out.txt");
+  TextStreamReader r(readstream);
+  REGISTER_TYPE(r,Derived<float>);
+  REGISTER_TYPE(r,Derived<string>);
+
+  Base* br1;
+  Base* br2;
+  r>>br1;
+  r>>br2;
+  
   return 0;
 }
+
+/*
+  Derived<float> val1 val2
+  Derived<string> val1 val2
+
+  obj = new Derived<float>();
+*/

@@ -43,7 +43,7 @@ public:
   save(T* T_data)
   {
     write_type(T_data);
-    write_type(T_data);
+    //write_type(T_data);
     //serialize(*this, T_data);
   }
   
@@ -70,16 +70,18 @@ private:
   write_type(T* & T_data)
   {
     std::string type_key(InfoList<TextStreamWriter>::get_matching_type(T_data)->key());
-    *stream<<type_key<<" ";
+    *this<<type_key;
   }
 
+  // make it do nothing - will not write type for non-polymorphics
   template <class T>
   void write_type(const T & T_data)
   {
+    return;
     // Assuming no type name contains a word/string terminator, no
     // need to store length
-    std::string type_as_string(typeid(T_data).name());
-    *stream<<type_as_string<<" ";
+    //std::string type_as_string(typeid(T_data).name());
+    //*stream<<type_as_string<<" ";
   }
 
   template <class T>

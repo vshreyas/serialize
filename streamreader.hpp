@@ -86,20 +86,20 @@ operator>>(Reader & reader, T & T_data)
   return reader;
 }
 
-/*
 template <typename Reader, typename T>
 typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
 && std::is_polymorphic<T>::value, Reader&>::type
-operator>>(Reader & reader, T* & T_data)
+  operator>>(Reader & reader, T* & T_data)
 {
   // T is of pointer type. Assume polymorphic
-  reader.load(T_data);
-  //reader.save(T_data);
-  //serialize(reader, T_data);
+  std::string type_name_stored;
+  reader>>type_name_stored;
+
+  auto match_elem = InfoList<Reader>::get_matching_type_by_key(type_name_stored);
+  T_data = static_cast<T*>(match_elem->call_deserialize(reader));
+
   return reader;
 }
-
-*/
 
 /** 
  * Default implementation which should do nothing. The user must
