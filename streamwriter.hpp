@@ -42,10 +42,7 @@ operator<<(Writer & writer, T* T_data)
   // T is of pointer type. Assume polymorphic
   auto match_elem = InfoList<Writer>::get_matching_type(T_data);
   match_elem->call_serialize(writer, T_data);
-  
-  //get_matching_type(T_data)->call_serialize(T_data);
-  /*writer.save(T_data);
-    serialize(writer, T_data);*/
+
   return writer;
 }
 
@@ -53,11 +50,5 @@ template <typename Writer, typename T>
 typename std::enable_if<std::is_base_of<StreamWriter, Writer>::value>::type
 serialize(Writer & writer, const T & T_data)
 {
-}
-
-template <class Writer, typename T>
-void register_type(Writer & writer, Info<T>* info)
-{
-  InfoList<Writer>::add_type(new TiedInfo<Writer,T>(*info));
 }
 #endif

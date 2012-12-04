@@ -314,4 +314,10 @@ struct InfoList
 template <class ReaderWriter>
 vector<TiedInfoBase<ReaderWriter>*> InfoList<ReaderWriter>::info_list {};
 
+template <class ReaderWriter, typename T>
+void register_type(ReaderWriter & writer, Info<T>* info)
+{
+  InfoList<ReaderWriter>::add_type(new TiedInfo<ReaderWriter,T>(*info));
+}
+
 #endif // _TYPES_HPP
