@@ -53,13 +53,13 @@ private:
   typename std::enable_if<std::is_array<T>::value,void>::type
   read_data(T & T_array_data)
   {
-    size_t element_size = sizeof(T_array_data[0]);
-    size_t array_size = sizeof(T_array_data)/element_size;
+    size_t array_size = std::extent<T>::value;
     size_t stored_array_size;
 
     *this>>stored_array_size;
     if (stored_array_size != array_size)
       {
+	// throw exception
 	std::cout<<"Stored array size = "<<stored_array_size
 		 <<", expected array size = "<<array_size;
 	return;

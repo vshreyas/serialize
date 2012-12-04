@@ -52,27 +52,34 @@ int main()
 
   ofstream stream("out.txt");
   TextStreamWriter w(stream);
-  REGISTER_TYPE(w,Derived<float>);
-  REGISTER_TYPE(w,Derived<string>);
-
+  REGISTER_TYPE(w, Derived<float>);
+  REGISTER_TYPE(w, Derived<string>);
+  
   w<<b1;			// w<<*(Derived<float>)*(b1)
   w<<b2;
 
-
   Base* array_b[] = {b1,b2,b1,b1,b2};
   w<<array_b;
+  int matrix[][3] = {{1,2,100}, {3,4,101}, {5,6,102}};
+  w<<matrix;
+  
   stream.close();
 
   ifstream readstream("out.txt");
   TextStreamReader r(readstream);
-  REGISTER_TYPE(r,Derived<float>);
-  REGISTER_TYPE(r,Derived<string>);
+  REGISTER_TYPE(r, Derived<float>);
+  REGISTER_TYPE(r, Derived<string>);
 
   Base* br1;
   Base* br2;
   r>>br1;
   r>>br2;
-  
+
+  Base* read_array_b[5];
+  r>>read_array_b;
+
+  int read_matrix[3][3] = {};
+  r>>read_matrix;
   return 0;
 }
 

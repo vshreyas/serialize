@@ -47,15 +47,33 @@ public:
     //serialize(*this, T_data);
   }
   
-  template <typename T>
+
+  /*template <typename T>
   typename std::enable_if<std::is_array<T>::value>::type
   save(const T & T_data)
   {
     write_type(T_data);
     // number of elements
-    *this<<(sizeof(T_data)/sizeof(T_data[0]));
-    for (size_t i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
-      *this<<T_data[i];
+    //*this<<(sizeof(T_data)/sizeof(T_data[0]));
+    //auto array_length = std::extent<T_data>::value;
+    
+    //for (size_t i = 0; i < sizeof(T_data)/sizeof(T_data[0]); ++i)
+    //*this<<T_data[i];
+    for (auto elem: T_data)
+      *this<<elem;
+      }*/
+
+  //  template <typename T, size_t N>
+  //  void save(const T(&array) [ N ] )
+  template <typename T>
+  typename std::enable_if<std::is_array<T>::value>::type
+  save(const T & T_data)
+  {
+    size_t length = std::extent<T>::value;
+
+    *this<<length;
+    for (size_t i = 0; i < length; ++i)
+	*this<<T_data[i];
   }
   
 private:

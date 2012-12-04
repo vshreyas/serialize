@@ -43,6 +43,7 @@ public:
   virtual bool is_same_type(const type_info& id_info)
   {
     NOT_IMPLEMENTED("is_same_type!\n");
+    return false;
   }
 
   /** 
@@ -133,7 +134,8 @@ public:
 private:
   virtual string get_key()
   {
-    NOT_IMPLEMENTED("not implemented get_key() called!"); return "";
+    NOT_IMPLEMENTED("not implemented get_key() called!");
+    return "";
   }
   
   virtual void cast_and_call_serialize(Writer & writer, void* other)
@@ -144,6 +146,7 @@ private:
   virtual bool check_if_same_type(void* other, const type_info & id_info)
   {
     NOT_IMPLEMENTED("Not implemented check_if_same_type called!\n");
+    return false;
   }
 };
 
@@ -208,7 +211,8 @@ private:
 
   virtual string get_key()
   {
-    NOT_IMPLEMENTED("not implemented get_key() called!"); return "";
+    NOT_IMPLEMENTED("not implemented get_key() called!");
+    return "";
   }
   
   virtual void* construct_and_call_deserialize(Reader & reader)
@@ -219,6 +223,7 @@ private:
   virtual bool check_if_same_type(void* other, const type_info & id_info)
   {
     NOT_IMPLEMENTED("Not implemented check_if_same_type called!\n");
+    return false;
   }
 };
 
@@ -260,12 +265,15 @@ struct InfoList
 {
   using ptr_type = TiedInfoBase<ReaderWriter>*;
 
-  static vector<ptr_type> info_list;
+  static map<string,ptr_type> info_list;
 
   static void add_type(ptr_type tied_info)
   {
     // check if type exists already first
-    info_list.push_back(tied_info);
+    if (info_list.count(tied_info->key()))
+      delete tied_info;
+    else
+      info_list[tied_info->key()] = tied_info;
   }
 
   /** 
@@ -280,10 +288,11 @@ struct InfoList
   template <class GivenType>
   static ptr_type get_matching_type(GivenType* obj)
   {
-    for (size_t i = 0; i < info_list.size(); ++i)
+    for (auto info_pair: info_list)
       {
-	if (info_list[i]->is_same_type(obj,typeid(*obj)))
-	  return info_list[i];
+	auto info_current = info_pair.second;
+	if (info_current->is_same_type(obj,typeid(*obj)))
+	  return info_current;
       }
 
     return nullptr;
@@ -301,18 +310,17 @@ struct InfoList
    */
   static ptr_type get_matching_type_by_key(string _key)
   {
-    for (size_t i = 0; i < info_list.size(); ++i)
-      {
-	if (info_list[i]->key() == _key)
-	  return info_list[i];
-      }
+    auto info_iter = info_list.find(_key);
 
-    return nullptr;
+    if (info_iter == info_list.end())
+      return nullptr;
+
+    return info_iter->second;
   }
 };
 
 template <class ReaderWriter>
-vector<TiedInfoBase<ReaderWriter>*> InfoList<ReaderWriter>::info_list {};
+map<string,TiedInfoBase<ReaderWriter>*> InfoList<ReaderWriter>::info_list = { };
 
 template <class ReaderWriter, typename T>
 void register_type(ReaderWriter & writer, Info<T>* info)

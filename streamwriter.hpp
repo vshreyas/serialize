@@ -12,12 +12,6 @@ class StreamWriter
 public:
   StreamWriter(std::ostream&);
 
-  template <class T>
-  void save(const T&)
-  {
-    NOT_IMPLEMENTED("`save()' of StreamWriter called.\n");
-  }
-
   virtual ~StreamWriter() = 0;		// don't close stream here
   
 protected:

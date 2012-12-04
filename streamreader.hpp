@@ -49,18 +49,6 @@ public:
    */
   virtual ~StreamReader() = 0;
 
-  /** 
-   * Dummy templated load function - if this ends up being called,
-   * it's an error.
-   *
-   * @param T_data Object to be read into
-   */
-  template <class T>
-  void load(T& T_data)
-  {
-    NOT_IMPLEMENTED("`load()' of StreamReader called.\n");
-  }
-
 protected:
   /**
    * istream object from where data has to be read.
