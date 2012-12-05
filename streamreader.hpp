@@ -13,6 +13,7 @@
 #define STREAMREADER_HPP
 
 #include "common.hpp"
+#include "types.hpp"
 
 #include <iostream>
 
@@ -31,6 +32,8 @@
  * depend on the user-defined `deserialize()' function for that class
  * which will perform the deserialization for individual members.
  *
+ * For polymorphics, the user must first register the derived classes using
+ * REGISTER_TYPE(<reader object>,<derived class name>).
  */
 class StreamReader
 {
@@ -41,11 +44,14 @@ public:
    *
    * @param is istream object
    */
-  StreamReader(std::istream& is);
+  StreamReader(istream& m_stream): stream(&m_stream)
+  {
+  }
 
   /** 
    * Virtual destructor - derived classes must not close the istream
    * object inside.
+   * Forces class to be abstract.
    */
   virtual ~StreamReader() = 0;
 
@@ -55,6 +61,13 @@ protected:
    */
   std::istream* stream;
 };
+
+/** 
+ * Trivial definition of virtual destructor.
+ */
+StreamReader::~StreamReader()
+{
+}
 
 /** 
  * >> operator enabled for derived classes of StreamReader.
@@ -75,7 +88,7 @@ operator>>(Reader & reader, T & T_data)
 }
 
 template <typename Reader, typename T>
-typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
+typename std::enable_if<std::is_base_of<StreamReader, Reader>::value
 && std::is_polymorphic<T>::value, Reader&>::type
   operator>>(Reader & reader, T* & T_data)
 {
@@ -83,7 +96,9 @@ typename std::enable_if <std::is_base_of<StreamReader, Reader>::value
   std::string type_name_stored;
   reader>>type_name_stored;
 
+  // Matching Info object corresponding to the dynamic type
   auto match_elem = InfoList<Reader>::get_matching_type_by_key(type_name_stored);
+  // call_deserialize returns void*, so cast to T* and return
   T_data = static_cast<T*>(match_elem->call_deserialize(reader));
 
   return reader;

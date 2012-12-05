@@ -1,0 +1,198 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{enumitem}
+\usepackage{verbatim}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\begin{document}
+\lstset{language=C++,captionpos=b,basicstyle=\small\sffamily,
+  columns=fullflexible, xleftmargin=.25in, xrightmargin=.25in}
+\newcommand{\choice}[1]{\textbf{Choice} #1}
+\newcommand{\reason}[1]{\textbf{Reason} #1}
+\newcommand{\term}[1]{\textbf{#1}}
+
+\newcommand{\code}[1]{\lstinline!#1!}
+\newcommand{\citem}[1]{\item{\code{#1}}}
+
+\newcommand{\lclass}[1]
+{
+\noindent\makebox[\linewidth]{\rule{\textwidth}{1pt}} 
+
+\textsc{Class} \code{#1}
+}
+\newcommand{\class}[1]
+{
+\textsc{Class} \code{#1}
+}
+\newcommand{\eoclass}
+{
+\noindent\makebox[\linewidth]{\rule{\textwidth}{1pt}}
+}
+
+\newcommand{\desc}[1]{\textbf{Description} #1}
+\newcommand{\mems}[1]{\textbf{Data Members} \\ #1}
+
+
+\newcommand{\cons}[1]{\textbf{Construction} \\ #1}
+\newcommand{\oper}[1]{\textbf{Operators} \\ #1}
+\newcommand{\memfns}[1]{\textbf{Member Functions} \\ #1}
+
+\title{\textbf{Serialization Library}}
+\maketitle
+\begin{center}
+\begin{tabular}{c c c}
+Serialization Library \\
+Design Document
+\end{tabular}
+\end{center}
+
+\vspace{1.5cm}
+
+\tableofcontents
+
+\section{Bird's-Eye View}
+Thinking of a possible design for a serialization library in C++
+immediately suggests that templates are going to be integral if any
+hopes of genericity are to be realized. Our proposed design is no
+exception, and due to the necessity of templating most of the
+functions we provide, inheritance is forced to play a smaller part.
+
+At a high level, the library uses \code{StreamWriter}s and
+\code{StreamReader}s to perform the serialization and the
+deserialization, respectively. They are wrapped around \code{ostream}
+and \code{istream} objects. Here on in this document, we refer to
+`Reader/Writer' when we mean objects which may be of type either
+\code{StreamReader} or \code{StreamWriter}.
+
+Strictly speaking, \code{StreamWriter} and \code{StreamReader} are
+abstract classes, and the classes which do the real work are derived
+from these two, implementing the core functions in their own
+way. \code{TextStreamWriter} and \code{TextStreamReader} form one set
+of complementary implementations provided. 
+
+The \code{<<} and \code{>>} operators are implemented for
+\code{StreamWriter} and \code{StreamReader} objects, and when used on
+a given `serializable' object, perform the implementation-specific
+`saving' and `loading' of data.
+
+\code{save} and \code{load} member functions are expected to be
+defined in the implementation for each type of object the user
+attempts to serialize or deserialize. It is desirable to generate an
+error at compile-time when possible to inform the user of any missing
+functions.
+
+\section{Brief Requirements}
+\begin{enumerate}
+\item Provide the user with a familiar syntax, preferably \code{<<} and \code{>>}.
+\item \textit{Mandatory:} Support serializing (and, implicitly,
+  deserializing) of all fundamental types.
+\item \textit{Mandatory:} Support serializing of common standard
+  library containers without extra user intervention.
+\item \textit{Mandatory:} Support serializing of user-defined classes.
+\item \textit{Optional:} Support serializing pointers and references
+  (but make it easy to extend the library to support them without
+  design changes).
+\item \textit{Optional:} Handle polymorphic objects correctly.
+\item Provide a portable text-based implementation. (The working
+  definition of `portable' throughout was ``should work on at least
+  one Linux, Windows, and Mac without changing anything.'')
+\end{enumerate}
+
+\section{Limitations in Requirements}
+\begin{enumerate}
+\item We do not enforce portability since it is in some cases
+  (eg. binary) quite difficult to implement, and not always critical.
+\item Pointers for arbitrary types are not supported, though it is not
+  foreseen to be difficult once the object-tracking mechanism is
+  implemented.
+\end{enumerate}
+
+\section{Design}
+\subsection{Interface}
+
+\lclass{StreamWriter}
+\begin{description}
+\item \cons{ Specify an open \code{std::ostream} object.}
+\item \mems{ \code{stream}: Pointer to the \code{std::ostream} object.}
+\end{description}
+
+\class{StreamReader}
+\begin{description}
+\item \cons{ Specify an open \code{std::istream} object.}
+\item \mems{ \code{stream}: Pointer to the \code{std::istream} object.}
+\end{description}
+\eoclass
+
+
+Two main base classes, \code{StreamWriter} and \code{StreamWriter},
+exist, which provide an interface for the concrete Reader/Writer
+classes. Ideally, they would also provide some standard implementation
+helpers for the derived classes, but there was not found to be much
+genuinely common between all possible derived classes except possibly
+the \code{istream} or \code{ostream} objects.
+
+The \code{<<} and \code{>>} operators need to be defined for
+\code{StreamWriter} and \code{StreamReader} derived classes, and need
+to work with any given type. In effect, for example considering
+\code{TextStreamReader} and \code{TextStreamWriter} as the derived
+classes, the desired syntax is:
+
+\begin{lstlisting}
+TextStreamWriter writer(out_stream);
+writer<<any_object_to_write;
+
+TextStreamReader reader(in_stream);
+reader>>any_object_to_read;
+\end{lstlisting}
+
+They are the major (and in many cases, the only) functions the user
+calls from the derived class objects.
+
+
+Since the object on the right side can be of any type, the operators
+must be templated on this object.  
+
+Also, thinking ahead to what might happen in the body of the
+operators, it appears it is totally up to how \code{TextStreamWriter}
+and \code{TextStreamReader} implement the operator for themselves, and
+as such are free to do anything, calling any member functions and so
+making the design inconsistent.
+
+We see this to be the only place to enforce design constraints for
+\code{TextStreamWriter} and \code{TextStreamReader} by defining the
+operators at a global level, independent of the derived classes.
+
+The operators are templated on the object type, and the body of the
+operator will involve calling another derived class-specific template
+function which performs the actual saving or loading. Virtual
+functions would be normally used for this, but due to the template
+requirement, we must make the operator a non-member function.
+
+To restrict each operator's applicability, \code{std::enable_if} is
+used.
+
+\begin{lstlisting}
+template <typename Reader, typename T>
+typename std::enable_if<std::is_base_of<StreamReader, Reader>::value, Reader&>::type
+operator>>(Reader & reader, T & T_data)
+{
+  reader.load(T_data);          // derived class must implement templated load(const T&)
+  deserialize(reader, T_data);
+  return reader;
+}
+
+template <typename Writer, typename T>
+typename std::enable_if <std::is_base_of<StreamWriter, Writer>::value, Writer&>::type
+operator<<(Writer & writer, const T & T_data)
+{
+  writer.save(T_data);          // derived class must implement templated save(T&)
+  serialize(writer, T_data);
+  return writer;
+}
+\end{lstlisting}
+
+
+\end{document}

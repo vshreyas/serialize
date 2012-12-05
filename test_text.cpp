@@ -27,21 +27,23 @@ void serialize(Writer & w, const Base & b)
   w<<b.b;
 }
 
-template <class Writer, class T>
-void serialize(Writer & w, const Derived<T> & d)
-{
-  w<<d.x;
-};
-
 template <class Reader>
 void deserialize(Reader & r, Base & b)
 {
   r>>b.b;
 }
 
+template <class Writer, class T>
+void serialize(Writer & w, const Derived<T> & d)
+{
+  w<<static_cast<const Base>(d);
+  w<<d.x;
+};
+
 template <class Reader, class T>
 void deserialize(Reader & r, Derived<T> & d)
 {
+  r>>*static_cast<Base*>(&d);
   r>>d.x;
 }
 

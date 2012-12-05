@@ -9,7 +9,9 @@
  * 
  */
 
-#include "types.hpp"
+#ifndef _SERIALIZE_COMMON_HPP
+#define _SERIALIZE_COMMON_HPP
+
 #include <string>
 
 /** 
@@ -18,7 +20,10 @@
  * definition.
  *
  */
-void NOT_IMPLEMENTED();
+inline void NOT_IMPLEMENTED()
+{
+  std::cout<<"Call to a NOT IMPLEMENTED function!\n";
+}
 
 /** 
  * See `NOT_IMPLEMENTED()`. Displays a user-defined message in
@@ -27,4 +32,9 @@ void NOT_IMPLEMENTED();
  * @param msg message
  * \sa NOT_IMPLEMENTED()
  */
-void NOT_IMPLEMENTED(std::string msg);
+inline void NOT_IMPLEMENTED(std::string msg)
+{
+  std::cout<<"NOT IMPLEMENTED: "<<msg;
+}
+
+#endif // _SERIALIZE_COMMON_HPP
