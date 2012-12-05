@@ -1,17 +1,24 @@
 14 Derived<float>
+124
 42.51
 15 Derived<string>
+124
 6 hello!
 5
 14 Derived<float>
+124
 42.51
 15 Derived<string>
+124
 6 hello!
 14 Derived<float>
+124
 42.51
 14 Derived<float>
+124
 42.51
 15 Derived<string>
+124
 6 hello!
 3
 3
