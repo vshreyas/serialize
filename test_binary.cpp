@@ -1,6 +1,5 @@
 #include "binary_streamreader.hpp"
 #include "binary_streamwriter.hpp"
-#include "stl_serialize.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -157,11 +156,10 @@ int main()
     map<string, int> m;
     m.insert(p_data);
     m.insert(std::pair<string, int>(string_data, int_data));
-
     //test polymorphic
     Base* b1 = new Derived<float> {42.51};
     Base* b2 = new Derived<string> {"hello!"};
-
+    int matrix[][3] = {{1,2,100}, {3,4,101}, {5,6,102}};
     ofstream os("out.txt", ios::out|ios::binary|ios::trunc);
     os.seekp(ios::beg);
     BinaryStreamWriter writer(os);
@@ -173,6 +171,7 @@ int main()
     writer<<char_data<<int_data<<double_data<<string_data<<int_array<<str_array<<cls<<d_cls<<v<<b_data<<p_data<<m;
     writer<<b1;
     writer<<b2;
+    writer<<matrix;
     os.close();
 
     char char_read;
@@ -189,6 +188,7 @@ int main()
     map<string, int> m_read;
     Base* br1;
     Base* br2;
+    int read_matrix[3][3] = {};
     ifstream is("out.txt", ios::in|ios::binary);
     BinaryStreamReader reader(is);
 
@@ -199,6 +199,7 @@ int main()
     reader>>m_read;
     reader>>br1;
     reader>>br2;
+    reader>>read_matrix;
     is.close();
 
     if (char_read != char_data)

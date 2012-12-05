@@ -1,12 +1,24 @@
+/**
+ * @file   binary_streamreader.hpp
+ * @author Shreyas Vinayakumar
+ * @date   Tue Dec  4 17:39:19 2012
+ *
+ * @brief  Classes/methods to deserialize the binary data written by BinaryStreamWriter
+ * Expected to be used for native data i.e. currently non-portable. Will be extended to portable also in next revision
+ */
+
 #ifndef BINARY_STREAMREADER_HPP
 #define BINARY_STREAMREADER_HPP
 #include "streamreader.hpp"
+#include "stl_serialize.hpp"
 #include <cstddef>
 #include <type_traits>
 #include <string>
-#include <vector>
-#include <map>
 
+/**
+ * Inherits from StreamReader; constructed from an input stream
+ * Reads binary data from the stream into objects according to the predefined format
+ */
 class BinaryStreamReader: public StreamReader
 {
 public:
@@ -16,11 +28,10 @@ public:
   ~BinaryStreamReader() {
   }
 
-  template <typename T>
-  friend void deserialize(BinaryStreamReader& r, std::vector<T>& vec_data);
-
-  template <typename T1, typename T2>
-  friend void deserialize(BinaryStreamReader& r, std::pair<T1, T2>& pair_data);
+  /**
+   * Reads types that are not user-defined
+   * @param T_data non-class type object
+   */
 
   template <typename T>
   typename std::enable_if<!std::is_class<T>::value>::type
@@ -30,6 +41,11 @@ public:
     read_data(T_data);
   }
 
+  /**
+   * Dummy load function for classes.
+   * The functionality for classes is actually in serialize
+   */
+
   template <typename T>
   typename std::enable_if<std::is_class<T>::value>::type
   load(T & T_data)
@@ -38,6 +54,10 @@ public:
     // Reading of data left to `deserialize'
   }
 
+  /**
+   * Reads an STL string.
+   * Treated specially here because this type is used to store identifiers for some classes.
+   */
   void load(std::string & string_data)
   {
     read_and_check_types(string_data);
@@ -45,12 +65,24 @@ public:
   }
 
 private:
+
+  /**
+   * Not checking types now; just a stub
+   */
   template <class T>
   bool read_and_check_types(const T &)
   {
       return true;
     }
 
+  /**
+   * This template covers all fundamental types(signed/unsignedint, float, char.
+   * They are basically serialized by just dumping the binary representations
+   * This makes code non-portable as diff conventions(number of bytes, endianness) may hold
+   * One workaround could be to store each type in a standard format
+   * and write a header file that performs necessary conversions for each platform
+   *
+   */
   template <class T>
   typename std::enable_if<std::is_fundamental<T>::value,void>::type
   read_data(T & T_data)
@@ -58,17 +90,24 @@ private:
     stream->read(reinterpret_cast<char*>(&T_data), sizeof(T_data));
   }
 
+  /**
+   * Handles reading C-style arrays
+   * The array must be static viz. its size must be known at compile time
+   * Non-static extensions such as those provided by GCC are not supported
+   * @param templated arg T_array_data, array that can hold objects of type T
+   * @throw SizeInsufficient exception if the provided array is not large enough
+   */
   template <class T>
   typename std::enable_if<std::is_array<T>::value,void>::type
   read_data(T & T_array_data)
   {
-    size_t element_size = sizeof(T_array_data[0]);
-    size_t array_size = sizeof(T_array_data)/element_size;
+    size_t array_size = std::extent<T>::value;
     size_t stored_array_size;
 
-    stream->read(reinterpret_cast<char*>(&stored_array_size), sizeof(stored_array_size));
+    *this>>stored_array_size;
     if (stored_array_size != array_size)
       {
+	// throw exception
 	std::cout<<"Stored array size = "<<stored_array_size
 		 <<", expected array size = "<<array_size;
 	return;
@@ -77,7 +116,10 @@ private:
     for (size_t i = 0; i < array_size; ++i)
 	*this>>T_array_data[i];
   }
-
+  /**
+   * Read data from stream into a std::string
+   * @param a string
+   */
   void read_data(std::string & string_data)
   {
     unsigned int size;
@@ -88,39 +130,5 @@ private:
   }
 };
 
-template <typename T>
-void deserialize(BinaryStreamReader& r, std::vector<T>& vec_data) {
-      size_t vec_size_read;
-      r.stream->read(reinterpret_cast<char*>(&vec_size_read), sizeof(vec_size_read));
-      // check vec_data size here and throw an exception if it is not 0(ie not empty)
-      int i;
-      T t;
-      for(i = 0; i<vec_size_read;i++){
-        r.stream->read(reinterpret_cast<char*>(&t), sizeof(t));
-        vec_data.push_back(t);
-      }
-}
-
-template <typename T1, typename T2>
-void deserialize(BinaryStreamReader& r, std::pair<T1, T2>& pair_data) {
-    r>>pair_data.first>>pair_data.second;
-}
-
-template<typename T1, typename T2>
-void deserialize(BinaryStreamReader& r, const std::map<T1, T2>& map_data) {
-    size_t map_size_read;
-    r>>map_size_read;
-    //check size
-    std::pair<T1, T2> p;
-    bool ret = true;
-    int i;
-    for(i = 0; i<map_size_read;i++){
-        r>>p;
-        ret = map_data.insert(p);
-        if(ret == false) {
-            //throw exception here
-        }
-    }
-}
 
 #endif
