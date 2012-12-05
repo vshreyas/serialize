@@ -64,7 +64,10 @@ int main()
   w<<array_b;
   int matrix[][3] = {{1,2,100}, {3,4,101}, {5,6,102}};
   w<<matrix;
-  
+
+  char cstr[] = "hello there!\n my name is shashwat.";
+  w<<cstr;
+
   stream.close();
 
   ifstream readstream("out.txt");
@@ -82,6 +85,11 @@ int main()
 
   int read_matrix[3][3] = {};
   r>>read_matrix;
+
+  char* cstr_read;
+  r>>cstr_read;
+
+  cout<<"read cstring = "<<cstr_read<<endl;
   return 0;
 }
 

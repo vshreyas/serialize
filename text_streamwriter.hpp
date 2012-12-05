@@ -15,12 +15,13 @@
 #ifndef TEXT_STREAMWRITER_HPP
 #define TEXT_STREAMWRITER_HPP
 
+#include <cstring>
 #include <iostream>
 #include <string>
 #include <typeinfo>
 
-#include "types.hpp"
 #include "streamwriter.hpp"
+#include "types.hpp"
 
 /**
  * Serializes data in a text format. Format chosen is: one item per
@@ -56,12 +57,28 @@ public:
     write_data(T_data);
   }
 
+  /** 
+   * Write string data
+   *
+   * @param string_data given string
+   */
   void save(const std::string & string_data)
   {
     write_type(string_data);
     write_data(string_data);
   }
 
+  /** 
+   * Write char* data, interpreting it as a C-style string
+   *
+   * @param cstring_data given char*
+   */
+  void save(const char* cstring_data)
+  {
+    write_type(cstring_data);
+    write_data(cstring_data);
+  }
+  
   /** 
    * For a class, there is no `write_data'. Writing of the members
    * depends on the user-defined `serialize' function.
@@ -155,6 +172,17 @@ private:
     *stream<<T_data<<std::endl;
   }
 
+  /** 
+   * Write a given char*, assuming it to be a C-style string.
+   * Format: <length><one space><cstring data>
+   *
+   * @param cstring_data given char* whose data is to be written
+   */
+  void write_data(const char* cstring_data)
+  {
+    *stream<<strlen(cstring_data)<<" "<<cstring_data<<std::endl;
+  }
+  
   /** 
    * For strings, format is: <length><one space><string data>
    *

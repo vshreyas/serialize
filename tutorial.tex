@@ -9,7 +9,8 @@
 
 \begin{document}
 \lstset{language=C++,captionpos=b,basicstyle=\small\sffamily,
-  columns=fullflexible, xleftmargin=.25in, xrightmargin=.25in}
+  columns=fullflexible, xleftmargin=.25in, xrightmargin=.25in,
+  resetmargins=true}
 \newcommand{\choice}[1]{\textbf{Choice} #1}
 \newcommand{\reason}[1]{\textbf{Reason} #1}
 \newcommand{\term}[1]{\textbf{#1}}
@@ -111,6 +112,29 @@ functions.
 \end{enumerate}
 
 \section{Design}
+
+\subsection{Serializability}
+We refer to an object of type \code{T} as being \textbf{serializable} if:
+\begin{enumerate}
+\item \code{T} is a fundamental type: any of the standard
+  boolean, character, integer, or floating point types.
+\item \code{T} is of type \code{std::string}.
+\item \code{T} is of class type with the \code{serialize} (and
+  \code{deserialize}, for the deserialization process) function for
+  \code{T} defined.
+\item \code{T} is a pointer to a polymorphic object which is
+  serializable and has a zero-argument constructor.
+\item \code{T} is an array of serializable objects.
+\end{enumerate}
+
+All implementations must be able to serialize any of these
+serializable objects.
+
+The definition gives a clear view of what types are currently
+supported by the library. Generic pointers are not yet supported, and
+polymorphic objects must have a zero-argument constructor for
+deserialization to work.
+
 \subsection{Interface}
 
 \lclass{StreamWriter}
@@ -179,7 +203,7 @@ template <typename Reader, typename T>
 typename std::enable_if<std::is_base_of<StreamReader, Reader>::value, Reader&>::type
 operator>>(Reader & reader, T & T_data)
 {
-  reader.load(T_data);          // derived class must implement templated load(const T&)
+  reader.load(T_data);          // derived class must implement templated load(T&)
   deserialize(reader, T_data);
   return reader;
 }
@@ -188,11 +212,290 @@ template <typename Writer, typename T>
 typename std::enable_if <std::is_base_of<StreamWriter, Writer>::value, Writer&>::type
 operator<<(Writer & writer, const T & T_data)
 {
-  writer.save(T_data);          // derived class must implement templated save(T&)
+  writer.save(T_data);          // derived class must implement templated save(const T&)
   serialize(writer, T_data);
   return writer;
 }
 \end{lstlisting}
+
+We have not lost out by not using virtual functions - the template
+functions are equally easy to specialize, and provide a good design
+enforcement mechanism, without any overhead. However, unhelpful
+compiler error messages become a problem.
+
+In an early version the derived classes were supposed to implement
+these operators as member functions, and though that can be made to
+work, is a source of subtle errors - for example, forgetting to return
+\code{*this}. These problems are eliminated by defining them as a
+couple of template functions globally.
+
+\subsection{Inside the Derived Reader/Writer Classes}
+\lclass{TextStreamWriter}
+\begin{description}
+\item \cons { Specify an open \code{std::ostream} object.}
+\item \textbf{Member Functions}
+
+  Variants of \code{save} are the only public member functions to be
+  defined. The general structure in the current implementation is:
+
+\begin{lstlisting}
+template <typename T>
+typename std::enable_if<std::is_fundamental<T>::value>::type
+save(const T & T_data)
+{
+  write_type(T_data);
+  write_data(T_data); // we know how to write fundamental data ourselves
+}
+
+template <typename T>
+typename std::enable_if<std::is_class<T>::value>::type
+save(const T & T_data)
+{
+  write_type(T_data);
+  // we don't know how to write class data by ourselves
+}
+\end{lstlisting}
+
+\code{save} is defined for other groups of types similarly.
+\end{description}
+
+\class{TextStreamReader}
+\begin{description}
+\item \cons{ Specify an open \code{std::istream} object.}
+\item \textbf{Member Functions}
+  Variants of \code{load} are the only public member functions to be
+  defined. The general structure in the current implementation is:
+
+
+\begin{lstlisting}
+  template <typename T>
+  typename std::enable_if<!std::is_class<T>::value>::type
+  load(T & T_data)
+  {
+    read_and_check_types(T_data);
+    read_data(T_data); // can read data ourselves if not class type
+  }
+
+  template <typename T>
+  typename std::enable_if<std::is_class<T>::value>::type
+  load(T & T_data)
+  {
+    read_and_check_types(T_data);
+    // don't know which class members to read data into
+  }
+\end{lstlisting}
+
+\end{description}
+\eoclass
+
+Specializing \code{load} and \code{save} for each group of types is
+done at the derived class level. The implementation decides whether to
+write type information or not, and if so, for which groups of types it
+should be written.
+
+The \code{save} and \code{load} functions must be `in sync' with each
+other, and for a while there was a temptation to write
+\code{TextStreamWriter} and \code{TextStreamReader} together in the
+same file to make this easier. This was dropped as it turned out to be
+simple enough to keep them consistent even across different files if
+one function was changed at a time.
+
+It can be seen from the code examples above that for fundamental
+types, \code{TextStreamWriter} can write data completely without any
+extra user help. However, for classes such as:
+
+\begin{lstlisting}
+class Cls
+{
+  int first_mem_int;
+  double second_mem_double;
+  string third_mem_string;
+  int fourth_mem_int;
+};
+\end{lstlisting}
+
+there is no general way to serialize each member of the class and
+deserialize them back into the same members correctly. This can be
+done in special cases such as for binary serializers which may copy
+the entire representation from the memory, but even that approach is
+not completely fool-proof. In most cases, not all members are desired
+to be serialized, making an entire memory copy inefficient. Also,
+doing a memory copy would copy the addresses held by each member
+pointer but that would result in incorrect behaviour on
+deserialization. PODs seem to be more friendly towards the memory
+copy, but not classes in general.
+
+For other serializers, there does not appear to be a reasonable way to
+do it (even for PODs) without some help from the user.
+
+\subsection{Dealing with Classes}
+Having become convinced that user intervention is required for
+classes, the design of the method of intervention is the next step.
+The details the user must give to the library are:
+\begin{enumerate}
+\item Exactly which members (and in what order) of the class to
+  serialize.
+\item While deserializing, exactly which members (and in what order)
+  of the class should be read into.
+\item If the class is a derived class, whether the base object (and
+  its relative order in (de)serialization) must also be (de)serialized.
+\item Importantly, this method should be independent of the
+  implementation used, eg., text/binary implementations of the
+  serializer.
+\end{enumerate}
+
+The generic behaviour required makes a good case for this
+`intervention' method to be a template function (templated on the
+Reader/Writer). Also considered but eventually not implemented was
+specifying this as an ordered `list' of members of the class somehow,
+but making such a list possible is not very straightforward and takes
+away some power from the user as compared to if this was a function.
+
+An example of the way the template user-defined functions might be
+implemented for \code{Cls} is:
+\begin{lstlisting}
+template <class Writer>
+void serialize(Writer w, const Cls & cls_object)
+{
+  w<<cls_object.first_mem_int;
+  w<<cls_object.second_mem_double;
+  w<<cls_object.third_mem_string;
+  w<<cls_object.fourth_mem_string;
+}
+
+template <class Reader>
+void deserialize(Reader r, Cls & cls_object)
+{
+  r>>cls_object.first_mem_int;
+  r>>cls_object.second_mem_double;
+  r>>cls_object.third_mem_string;
+  r>>cls_object.fourth_mem_string;
+}
+
+int main()
+{
+  // truncated
+  Cls cls_object;
+  TextStreamWriter w(stream); // stream is an ostream
+  w<<cls_object; // << defined for classes such that it calls serialize()
+}
+\end{lstlisting}
+
+The \code{w<<cls_object;} statement in \code{main()} would invoke the
+\code{serialize} function for the class, and this in turn invokes the
+\code{<<} operator for each of the members specified. This goes on
+recursively upto the fundamental type objects which form the leaf
+nodes and are serialized since as a requirement, the library must know
+how to serialize fundamental types.
+
+There is a flaw in this particular example -- the members have by
+default the \textbf{private} access specifier, and \code{serialize}
+and \code{deserialize}, being free functions, cannot access them
+without another user intervention.
+
+\subsubsection{Access to Class Members}
+The objective is to get \code{serialize} and \code{deserialize} to be
+able to access non-public members of the class. Here is another
+decision point:
+\begin{enumerate}
+\item Should \code{serialize} and \code{deserialize} be declared as
+  \code{friend} functions of the user-defined class?
+\item Should \code{serialize} and \code{deserialize} be defined as
+  member functions of the user-defined class?
+\end{enumerate}
+
+Both these options require some kind of change to the user's class --
+a \code{friend} declaration or a new member function definition, and
+are functionally equivalent.
+
+Writing them as member functions results in more compact code. But
+they should themselves be made \code{private} so that they do not form
+part of the interface of the object. Only the serialization library's
+operators should have access to these member \code{serialize} and
+\code{deserialize} functions.
+
+To enable this kind of behaviour, we would need to make the
+serialization library `friends' with the user's class. This in itself
+involves a \code{friend} declaration.
+
+On the other hand, making \code{serialize} and \code{deserialize} free
+functions, with each of them declared \code{friend}, makes the code more
+verbose but leads to a simpler design.
+
+The best option would be to support both these methods. The library
+currently supports the free \code{friend} function style, but adding
+support for the other method is not too difficult:
+
+\begin{lstlisting}
+// As defined earlier
+template <typename Writer, typename T>
+typename std::enable_if <std::is_base_of<StreamWriter, Writer>::value, Writer&>::type
+operator<<(Writer & writer, const T & T_data)
+{
+  writer.save(T_data);          // derived class must implement templated save(const T&)
+  serialize(writer, T_data);
+  return writer;
+}
+
+// Implementation of default serialize for classes
+template <typename Writer, typename T>
+typename std::enable_if < std::is_base_of<StreamWriter, Writer>::value &&
+			  std::is_class<T>::value >::type
+serialize(Writer & writer, const T & class_obj)
+{
+  class_obj.serialize(writer);
+}
+
+// If user defines a free serialize, it gets called preferentially during overload resolution
+// else the user must define a member serialize which is called by default
+\end{lstlisting}
+
+This enables the member-\code{serialize} syntax, but the problem with
+access is not yet resolved, since our default \code{serialize} must be
+able to call the class's (private) \code{serialize} member function. A
+workaround would be to declare this default \code{serialize} function
+to be a friend of the user's class. This is not much cleaner compared
+to the free-\code{serialize} technique, and so it was decided to stick
+with defining \code{serialize} as a free function.
+
+Furthermore, if the user does not need to provide access to non-public
+members, the free \code{serialize} function approach does not require
+any change to the class definition, and so can be used for classes
+whose code the user cannot change.
+
+\subsubsection{Serializing Classes Belonging to an Inheritance Hierarchy}
+
+When serializing a derived class, the approach given above fails to
+serialize the base object's members unless it is explicitly instructed
+to do so.
+
+There is a natural solution to this -- calling the \code{<<} operator
+on the derived object cast to the base type invokes the serialization
+of the base object.
+
+This means the user must define the \code{serialize} function for all
+base classes if the base objects are to be serialized.
+
+\begin{lstlisting}
+class DerivedCls: public Cls
+{
+  // dummy derived class
+  char mem_char;
+};
+
+template <typename Writer>
+void serialize(Writer & w, const DerivedCls & derived_object)
+{
+  w<<(static_cast<const Cls>(derived_object)); // serialize base class
+  w<<mem_char;
+}
+\end{lstlisting}
+
+The same can be extended to \code{deserialize}, only without the
+\code{const} specifier.
+
+\subsubsection{Arrays}
+
 
 
 \end{document}

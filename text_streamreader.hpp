@@ -81,6 +81,17 @@ public:
     read_and_check_types(string_data);
     read_data(string_data);
   }
+
+  /** 
+   * Read into a char*, assuming it is a C-style string.
+   *
+   * @param cstring_data given character pointer
+   */
+  void load(char* & cstring_data)
+  {
+    read_and_check_types(cstring_data);
+    read_data(cstring_data);
+  }
   
 private:
 
@@ -145,12 +156,30 @@ private:
     *stream>>len;
     stream->get();		// space
     char* s = new char[len + 1];
-    size_t chars_to_read = len;
 
     stream->read(s, len);
     s[len] = '\0';
     string_data = std::string(s, len);
     delete[] s;
+  }
+
+  /** 
+   * Read a C-style string, assuming the given char* represents one.
+   * Changes the address pointed to by the given pointer. Caller is
+   * responsible for deleting it.
+   *
+   * @param cstring_data given char*, assumed to be a C-style string
+   */
+  void read_data(char* & cstring_data)
+  {
+    size_t len;
+    *stream>>len;
+    stream->get();
+    char* s = new char[len + 1];
+
+    stream->read(s,len);
+    s[len] = '\0';
+    cstring_data = s;
   }
 };
 
