@@ -5,7 +5,7 @@
  */
 #ifndef STL_SERIALIZE_HPP
 #define STL_SERIALIZE_HPP
-#include "StreamWriter.hpp"
+#include "streamwriter.hpp"
 #include <cstddef>
 #include <type_traits>
 #include <vector>
@@ -63,7 +63,7 @@ deserialize(Reader& r, std::vector<T>& vec_data) {
       //r.stream->read(reinterpret_cast<char*>(&vec_size_read), sizeof(vec_size_read));
       r>>vec_size_read;
       // check vec_data size here and throw an exception if it is not 0(ie not empty)
-      int i;
+      size_t i;
       T t;
       for(i = 0; i<vec_size_read;i++){
         //r.stream->read(reinterpret_cast<char*>(&t), sizeof(t));

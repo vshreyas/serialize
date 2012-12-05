@@ -2,6 +2,7 @@
 #include <iostream>
 #include "text_streamwriter.hpp"
 #include "text_streamreader.hpp"
+#include "stl_serialize.hpp"
 
 using namespace std;
 
@@ -68,6 +69,9 @@ int main()
   char cstr[] = "hello there!\n my name is shashwat.";
   w<<cstr;
 
+  vector<int> v_int = {1,23,125,21};
+  w<<v_int;
+  
   stream.close();
 
   ifstream readstream("out.txt");
@@ -90,6 +94,11 @@ int main()
   r>>cstr_read;
 
   cout<<"read cstring = "<<cstr_read<<endl;
+
+  vector<int> v_read;
+  r>>v_read;
+  for (auto x: v_read)
+    cout<<x<<endl;
   return 0;
 }
 
