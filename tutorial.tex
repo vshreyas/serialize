@@ -494,8 +494,62 @@ void serialize(Writer & w, const DerivedCls & derived_object)
 The same can be extended to \code{deserialize}, only without the
 \code{const} specifier.
 
+\subsection{Arrays, Pointers, and Polymorphic Objects}
+
+Having the basic mechanism for serializing fundamental types and
+classes in place, extending the library to handle other variations is
+mostly a matter of defining a template specialization for each type.
+
 \subsubsection{Arrays}
 
+The \code{type_traits} header includes a trait class (\code{extent})
+which can be used to correctly get any dimension of a given
+array. Prior to using this, the library used \code{sizeof}
+comparisons, but on testing for multidimensional arrays, the results
+were inaccurate.
 
+Arrays are supported by the library, but not pointers which are to be
+`interpreted' as dynamic arrays. 
+
+\begin{lstlisting}
+int matrix[][3] = {{1,2,100}, {3,4,101}, {5,6,102}}; // okay, serializes
+int *y = new int[3]; // not supported; compile-time error on attempted serialization
+\end{lstlisting}
+
+The array may be of any serializable type.
+
+\subsubsection{Pointers}
+
+Pointers to arbitrary types are not supported. This is due to the
+inherent ambiguity on whether the pointer represents a dynamic array
+or points to a single object.
+
+Support for \code{char*} pointers is implemented, but on the
+assumption that they are null-terminated C-style strings.
+
+A strategy for handling pointers in future versions is:
+\begin{enumerate}
+\item Allow serialization of pointers by assuming the pointer points
+  to one object.
+\item To serialize dynamic arrays such as \code{int* arr = new
+    int[10];}, the user will have to use a syntax like \code{for (int
+    i=0; i<10; ++i) writer<<&arr[i];}.
+\item Implement a pointer swizzling and deswizzling system. If we make
+  (severe) assumptions on the relations between all the pointers, we
+  can describe a simple swizzling/deswizzling system.
+\end{enumerate}
+
+As a simplistic description, the Writer/Reader objects would store a
+list of addresses of each object serialized/deserialized so far. When
+a pointer is to be serialized, the Writer looks up this list to check
+if the address being pointed to is present, and if so, at which
+index. If a valid index is obtained, the index is stored in the stream
+(along with a tag to indicate that this is a pointer reference, and
+not a numeric type). Else, the value of the object is serialized and
+the address is added to the list of known addresses.
+
+At the other end, the Reader also maintains a corresponding list of
+addresses of already deserialized objects. If a pointer reference is
+seen, then instead of 
 
 \end{document}
