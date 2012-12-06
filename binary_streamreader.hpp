@@ -88,6 +88,7 @@ private:
   read_data(T & T_data)
   {
     stream->read(reinterpret_cast<char*>(&T_data), sizeof(T_data));
+    checkandthrowBasicException(stream);    
   }
 
   /**
@@ -108,9 +109,7 @@ private:
     if (stored_array_size != array_size)
       {
 	// throw exception
-	std::cout<<"Stored array size = "<<stored_array_size
-		 <<", expected array size = "<<array_size;
-	return;
+	throw SizeMismatchException(stored_array_size, array_size);
       }
 
     for (size_t i = 0; i < array_size; ++i)
@@ -130,7 +129,31 @@ private:
     s[len] = '\0';
     string_data = std::string(s, len);
     delete[] s;
+
+    checkandthrowBasicException(stream);    
   }
+
+    /** 
+   * Read a C-style string, assuming the given char* represents one.
+   * Changes the address pointed to by the given pointer. Caller is
+   * responsible for deleting it.
+   *
+   * @param cstring_data given char*, assumed to be a C-style string
+   */
+  void read_data(char* & cstring_data)
+  {
+    size_t len;
+    stream->read(reinterpret_cast<char*>(&len),sizeof(len));
+
+    char* s = new char[len + 1];
+    stream->read(s,len);
+    s[len] = '\0';
+    cstring_data = s;
+
+    checkandthrowBasicException(stream);
+>>>>>>> exceptions
+  }
+
 };
 
 

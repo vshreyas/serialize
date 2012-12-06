@@ -1,9 +1,28 @@
+/**
+ * @file   types.hpp
+ * @author Shashwat Lal Das <shashwat@mashed-potato>
+ * @date   Wed Dec  5 21:34:37 2012
+ * 
+ * @brief Defines the classes used for storing and retrieving type
+ * information.  Classes from this file are useful in getting the
+ * unique key for each derived class type. The key is supplied by the
+ * user in some way. Here, the macro REGISTER_TYPE is provided for
+ * this purpose.
+ * 
+ * eg.
+ * Base* b = new Derived;
+ * TextStreamWriter w;
+ * REGISTER_TYPE(w, Derived);
+ */
+
 #ifndef _TYPES_HPP
 #define _TYPES_HPP
 
 #include "common.hpp"
 #include <algorithm>
+#include <exception>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <typeinfo>
 #include <map>
@@ -14,8 +33,47 @@ class InfoBase;
 
 using namespace std;
 
-#define REGISTER_TYPE(writer,type)					\
-  register_type(writer,new Info< type > (string(#type)) );		\
+// Registers a type T by creating a new Info<T> object and setting the
+// key to be the literal "T", i.e., the name of the type.
+#define REGISTER_TYPE(writer,type)				\
+  register_type(writer,new Info< type > (string(#type)) );
+
+/**
+ * Exception to be thrown when it is found that there is no registered
+ * type matching a given polymorphic object's type.
+ */
+class TypeNotRegisteredException: public exception
+{
+public:
+  /** 
+   * Default - do not know which type is not registered.
+   */
+  TypeNotRegisteredException(): m_type_key("") { }
+
+  /** 
+   * Know that a type with "type_key" is not registered. Output
+   * type_key in the exception message. (occurs during
+   * deserialization)
+   *
+   * @param type_key key of the type which is not registered.
+   */
+  TypeNotRegisteredException(string type_key): m_type_key(type_key) { }
+  
+  virtual const char* what() const throw(){
+    if (m_type_key == "")
+      return "A derived class type was not registered. (Can't tell which.)";
+	
+    stringstream ss (stringstream::in | stringstream::out);
+
+    ss<<"A derived class type was not registered. The type key is: "<<m_type_key;
+
+    return ss.str().c_str();
+  }
+
+private:
+  string m_type_key;		// the 'key' of the type, if we know it
+};
+
 
 /**
  * InfoBase - stores a string mapping to a type and provides a method
@@ -119,13 +177,37 @@ public:
   
   virtual ~TiedInfoBase() { }
 
+  /** 
+   * Return the `key'. The key represents a unique string identifier
+   * for the type being represented by this object.
+   *
+   *
+   * @return key, a unique string for each type represented.
+   */
   string key() { return get_key(); }
-  
+
+  /** 
+   * Check if the type represented by this object is the same as the
+   * dynamic type (using argument of type type_info) of another
+   * object.
+   *
+   * @param other pointer to the object
+   * @param id_info result of typeid(*object)
+   *
+   * @return true if this object represents the same type
+   */  
   bool is_same_type(void* other, const type_info & id_info)
   {
     return check_if_same_type(other, id_info);
   }
 
+  /** 
+   * Serializes the given object using the writer, treating the given
+   * object to be of the type represented by this object.
+   *
+   * @param writer Writer (class template parameter) object
+   * @param other given polymorphic object
+   */
   void call_serialize(Writer & writer, void* other)
   {
     cast_and_call_serialize(writer, other);
@@ -163,6 +245,14 @@ class TiedInfo<Writer, InfoType,
   : public TiedInfoBase<Writer>
 {
 public:
+  /** 
+   * Construct using a given Info<T> object. The Info<T> object has
+   * functions to check whether a given polymorphic object is of type
+   * T.
+   *
+   * @param _info Info<InfoType> object, where InfoType is a
+   * template parameter of this class.
+   */
   TiedInfo(Info<InfoType> _info): TiedInfoBase<Writer>(), m_info(_info) { }
 
 private:
@@ -182,9 +272,14 @@ private:
     return m_info.is_same_type(id_info);
   }
 
-  Info<InfoType> m_info;
+  Info<InfoType> m_info;	/**< member whose job is to check if given object is of type T */
 };
 
+/**
+ * Same as TiedInfoBase<Writer>, except that this is used for
+ * deserializing.
+ * 
+ */
 template <class Reader>
 class TiedInfoBase<Reader,
 		   typename enable_if<is_base_of<StreamReader,Reader>::value>::type>
@@ -202,6 +297,16 @@ public:
     return check_if_same_type(other, id_info);
   }
 
+  /** 
+   * Deserialize the given object from the stream. Construct the new
+   * object (of correct type) first. Then deserialize into that
+   * object. Return void* pointer to the constructed + deserialized
+   * object.
+   *
+   * @param reader StreamReader descendant
+   *
+   * @return Pointer to constructed and deserialized object
+   */
   void* call_deserialize(Reader & reader)
   {
     return construct_and_call_deserialize(reader);
@@ -227,6 +332,11 @@ private:
   }
 };
 
+/**
+ * Same as TiedInfoBase<Writer,InfoType>, except that this is used for
+ * deserializing.
+ * 
+ */
 template <class Reader,class InfoType>
 class TiedInfo<Reader,InfoType,
 	       typename enable_if<is_base_of<StreamReader,Reader>::value>::type>
@@ -238,7 +348,16 @@ public:
 private:
 
   virtual string get_key() { return m_info.key(); }
-  
+
+  /** 
+   * The type of the object is assumed to be the template parameter of
+   * this class, InfoType. Constructs an object of this type and
+   * deserializes into that object.
+   *
+   * @param reader StreamReader descendant
+   *
+   * @return Pointer to the created object
+   */  
   virtual void* construct_and_call_deserialize(Reader & reader)
   {
     InfoType* derived_ptr = new InfoType;
@@ -295,7 +414,9 @@ struct InfoList
 	  return info_current;
       }
 
-    return nullptr;
+    throw TypeNotRegisteredException();
+    
+    return nullptr;		// from an earlier version
   }
 
   /** 
@@ -313,7 +434,10 @@ struct InfoList
     auto info_iter = info_list.find(_key);
 
     if (info_iter == info_list.end())
-      return nullptr;
+      {
+	throw TypeNotRegisteredException(_key);
+	return nullptr;
+      }
 
     return info_iter->second;
   }
@@ -322,8 +446,23 @@ struct InfoList
 template <class ReaderWriter>
 map<string,TiedInfoBase<ReaderWriter>*> InfoList<ReaderWriter>::info_list = { };
 
+/** 
+ * Registers a type by creating a
+ * TiedInfo<StreamReader/StreamWriter,T> object from an Info<T> object.
+ *
+ * The Info<T> object has a key associated with it. T is the actual
+ * type being represented by the Info/TiedInfo object, and the key is
+ * the identifier associated with this Info/TiedInfo object.
+ *
+ * No two Info/TiedInfo objects with identical template parameters can
+ * have different keys. The key then represents a unique identifier
+ * for type T.
+ *
+ * @param readerwriter StreamReader/StreamWriter object
+ * @param info pointer to an Info<T> object
+ */
 template <class ReaderWriter, typename T>
-void register_type(ReaderWriter & writer, Info<T>* info)
+void register_type(ReaderWriter & readerwriter, Info<T>* info)
 {
   InfoList<ReaderWriter>::add_type(new TiedInfo<ReaderWriter,T>(*info));
 }
