@@ -38,7 +38,6 @@ using namespace std;
 #define REGISTER_TYPE(writer,type)				\
   register_type(writer,new Info< type > (string(#type)) );
 
-
 /**
  * Exception to be thrown when it is found that there is no registered
  * type matching a given polymorphic object's type.

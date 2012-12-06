@@ -14,7 +14,7 @@
 #include <iostream>
 #include <string>
 
-#include "stream_exceptions.hpp"
+#include "exceptions.hpp"
 
 /**
  * Call within functions which will be implemented later, or functions
