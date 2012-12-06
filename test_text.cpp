@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
-#include "text_streamwriter.hpp"
-#include "text_streamreader.hpp"
+#include "binary_streamwriter.hpp"
+#include "binary_streamreader.hpp"
 #include "stl_serialize.hpp"
 
 using namespace std;
@@ -54,11 +54,11 @@ int main()
   Base* b2 = new Derived<string>{"hello!"};
 
   ofstream stream("out.txt");
-  TextStreamWriter w(stream);
+  BinaryStreamWriter w(stream);
   REGISTER_TYPE(w, Derived<float>);
   REGISTER_TYPE(w, Derived<string>);
   
-  w<<b1;			// w<<*(Derived<float>)*(b1)
+  w<<b1;
   w<<b2;
 
   Base* array_b[] = {b1,b2,b1,b1,b2};
@@ -75,7 +75,7 @@ int main()
   stream.close();
 
   ifstream readstream("out.txt");
-  TextStreamReader r(readstream);
+  BinaryStreamReader r(readstream);
   REGISTER_TYPE(r, Derived<float>);
   REGISTER_TYPE(r, Derived<string>);
 

@@ -72,6 +72,22 @@ private:
     stream->write(reinterpret_cast<const char*>(&T_data), sizeof(T_data));
   }
 
+  /** 
+   * Write a given char*, assuming it to be a C-style string.
+   * Format: <length><one space><cstring data>
+   *
+   * @param cstring_data given char* whose data is to be written
+   */
+  void write_data(const char* cstring_data)
+  {
+    size_t slen = 0;
+    while (cstring_data[slen] != '\0')
+      slen++;
+    
+    stream->write(reinterpret_cast<const char*>(&slen), sizeof(slen));
+    stream->write(cstring_data, slen);
+  }
+
   void write_data(const std::string& string_data)
   {
     size_t slen = string_data.size();

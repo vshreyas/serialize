@@ -116,6 +116,7 @@ private:
   read_data(T & T_data)
   {
     *stream>>T_data;
+    checkandthrowBasicException(stream);
   }
 
   /** 
@@ -134,9 +135,7 @@ private:
     if (stored_array_size != array_size)
       {
 	// throw exception
-	std::cout<<"Stored array size = "<<stored_array_size
-		 <<", expected array size = "<<array_size;
-	return;
+	throw SizeMismatchException(stored_array_size, array_size);
       }
 
     for (size_t i = 0; i < array_size; ++i)
@@ -162,6 +161,7 @@ private:
     s[len] = '\0';
     string_data = std::string(s, len);
     delete[] s;
+    checkandthrowBasicException(stream);
   }
 
   /** 
@@ -181,6 +181,8 @@ private:
     stream->read(s,len);
     s[len] = '\0';
     cstring_data = s;
+
+    checkandthrowBasicException(stream);
   }
 };
 

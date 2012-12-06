@@ -52,7 +52,7 @@ public:
   virtual ~StreamWriter() = 0;		// don't close stream here
   
 protected:
-  std::ostream* stream;		/**< stream to write to */
+  ostream* stream;		/**< stream to write to */
 };
 
 StreamWriter::~StreamWriter()

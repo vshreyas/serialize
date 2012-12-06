@@ -59,7 +59,7 @@ protected:
   /**
    * istream object from where data has to be read.
    */
-  std::istream* stream;
+  istream* stream;
 };
 
 /** 

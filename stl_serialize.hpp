@@ -86,8 +86,7 @@ deserialize(Reader& r, std::map<T1, T2>& map_data) {
     //check size
     std::pair<T1, T2> p;
     std::pair<typename std::map<T1, T2>::iterator,bool> ret;
-    int i;
-    for(i = 0; i<map_size_read;i++){
+    for(auto i = 0; i<map_size_read;i++){
         r>>p;
         ret = map_data.insert(p);
         if(ret.second == false) {
