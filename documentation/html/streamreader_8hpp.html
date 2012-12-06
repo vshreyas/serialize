@@ -89,6 +89,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <p>Defines the interface for stream reading objects through the <a class="el" href="classStreamReader.html">StreamReader</a> abstract class. Also defines the default &gt;&gt; operator for these objects and the default `deserialize()' function.  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &quot;<a class="el" href="common_8hpp_source.html">common.hpp</a>&quot;</code><br/>
+<code>#include &quot;types.hpp&quot;</code><br/>
 <code>#include &lt;iostream&gt;</code><br/>
 </div>
 <p><a href="streamreader_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -106,6 +107,14 @@ Functions</h2></td></tr>
 &lt; <a class="el" href="classStreamReader.html">StreamReader</a>, Reader &gt;<br class="typebreak"/>
 ::value, Reader &amp; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">operator&gt;&gt;</a> (Reader &amp;reader, T &amp;T_data)</td></tr>
 <tr class="separator:a65f2c5400d86206cdb1f8d4e9d93bb7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cae8e4f97c20f412500c8d14668d36d"><td class="memTemplParams" colspan="2"><a class="anchor" id="a7cae8e4f97c20f412500c8d14668d36d"></a>
+template&lt;typename Reader , typename T &gt; </td></tr>
+<tr class="memitem:a7cae8e4f97c20f412500c8d14668d36d"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; std::is_base_of<br class="typebreak"/>
+&lt; <a class="el" href="classStreamReader.html">StreamReader</a>, Reader &gt;<br class="typebreak"/>
+::value &amp;&amp;std::is_polymorphic<br class="typebreak"/>
+&lt; T &gt;::value, Reader &amp; &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator&gt;&gt;</b> (Reader &amp;reader, T *&amp;T_data)</td></tr>
+<tr class="separator:a7cae8e4f97c20f412500c8d14668d36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adbb129b5642161bfb1bb6faee2479931"><td class="memTemplParams" colspan="2">template&lt;typename Reader , typename T &gt; </td></tr>
 <tr class="memitem:adbb129b5642161bfb1bb6faee2479931"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
 &lt; std::is_base_of<br class="typebreak"/>
@@ -201,7 +210,7 @@ template&lt;typename Reader , typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 20 2012 23:17:20 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Dec 5 2012 18:05:09 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

@@ -87,47 +87,64 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="preprocessor"></span><span class="preprocessor">#define STREAMREADER_HPP</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="common_8hpp.html" title="Contains common constants and functions to be used by the rest of the library. If this file becomes t...">common.hpp</a>&quot;</span></div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="keyword">class </span><a class="code" href="classStreamReader.html">StreamReader</a></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;{</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;  <a class="code" href="classStreamReader.html">StreamReader</a>(std::istream&amp; is);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;  <span class="keyword">virtual</span> ~<a class="code" href="classStreamReader.html">StreamReader</a>() = 0;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="code" href="classStreamReader.html#a89b0321e6d8e84ae82bee0b19a018f1f">   59</a></span>&#160;  <span class="keywordtype">void</span> <a class="code" href="classStreamReader.html#a89b0321e6d8e84ae82bee0b19a018f1f">load</a>(T&amp; T_data)</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;  {</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <a class="code" href="common_8cpp.html#a1407a35a33557a1a06e6306ab83c7eca">NOT_IMPLEMENTED</a>(<span class="stringliteral">&quot;`load()&#39; of StreamReader called.\n&quot;</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;  }</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;<span class="keyword">protected</span>:</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;  std::istream* <a class="code" href="classStreamReader.html#a36801ca47878dbbfd2db8a3c4d0d89c8">stream</a>;</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Reader, <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">typename</span> std::enable_if&lt;std::is_base_of&lt;StreamReader, Reader&gt;::value, Reader&amp;&gt;::type</div>
-<div class="line"><a name="l00081"></a><span class="lineno"><a class="code" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">   81</a></span>&#160;<a class="code" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">operator&gt;&gt;</a>(Reader &amp; reader, T &amp; T_data)</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;{</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  <span class="comment">// For classes, `load&#39; should rely on `deserialize&#39; to read the members</span></div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  reader.load(T_data);</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  <a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">deserialize</a>(reader, T_data);</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <span class="keywordflow">return</span> reader;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;}</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Reader, <span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;<span class="keyword">typename</span> std::enable_if&lt;std::is_base_of&lt;StreamReader, Reader&gt;::value&gt;::type</div>
-<div class="line"><a name="l00101"></a><span class="lineno"><a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">  101</a></span>&#160;<a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">deserialize</a>(Reader &amp; reader, T &amp; T_data)</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;{</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;}</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;types.hpp&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno"><a class="code" href="classStreamReader.html">   38</a></span>&#160;<span class="keyword">class </span><a class="code" href="classStreamReader.html">StreamReader</a></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;{</div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="code" href="classStreamReader.html#a5ffff1f45b038fd9a31aea483bd0f403">   47</a></span>&#160;  <a class="code" href="classStreamReader.html#a5ffff1f45b038fd9a31aea483bd0f403">StreamReader</a>(istream&amp; m_stream): <a class="code" href="classStreamReader.html#ac8fb8d8e1c0bf6080e40b2cc8fa19e90">stream</a>(&amp;m_stream)</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;  {</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;  }</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  <span class="keyword">virtual</span> <a class="code" href="classStreamReader.html#aea0065a184aa6132de6635f091d6fb27">~StreamReader</a>() = 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;<span class="keyword">protected</span>:</div>
+<div class="line"><a name="l00062"></a><span class="lineno"><a class="code" href="classStreamReader.html#ac8fb8d8e1c0bf6080e40b2cc8fa19e90">   62</a></span>&#160;  std::istream* <a class="code" href="classStreamReader.html#ac8fb8d8e1c0bf6080e40b2cc8fa19e90">stream</a>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;};</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div>
+<div class="line"><a name="l00068"></a><span class="lineno"><a class="code" href="classStreamReader.html#aea0065a184aa6132de6635f091d6fb27">   68</a></span>&#160;<a class="code" href="classStreamReader.html#aea0065a184aa6132de6635f091d6fb27">StreamReader::~StreamReader</a>()</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;{</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;}</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Reader, <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="keyword">typename</span> std::enable_if&lt;std::is_base_of&lt;StreamReader, Reader&gt;::value, Reader&amp;&gt;::type</div>
+<div class="line"><a name="l00082"></a><span class="lineno"><a class="code" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">   82</a></span>&#160;<a class="code" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">operator&gt;&gt;</a>(Reader &amp; reader, T &amp; T_data)</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;{</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;  <span class="comment">// For classes, `load&#39; should rely on `deserialize&#39; to read the members</span></div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;  reader.load(T_data);</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;  <a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">deserialize</a>(reader, T_data);</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;  <span class="keywordflow">return</span> reader;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;}</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Reader, <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">typename</span> std::enable_if&lt;std::is_base_of&lt;StreamReader, Reader&gt;::value</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;&amp;&amp; std::is_polymorphic&lt;T&gt;::value, Reader&amp;&gt;::type</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;  <a class="code" href="streamreader_8hpp.html#a65f2c5400d86206cdb1f8d4e9d93bb7f">operator&gt;&gt;</a>(Reader &amp; reader, T* &amp; T_data)</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;{</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;  <span class="comment">// T is of pointer type. Assume polymorphic</span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;  std::string type_name_stored;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;  reader&gt;&gt;type_name_stored;</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;  <span class="comment">// Matching Info object corresponding to the dynamic type</span></div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;  <span class="keyword">auto</span> match_elem = <a class="code" href="structInfoList.html#a071d4fb80f0d0d93a96309e2a6cbd4fd">InfoList&lt;Reader&gt;::get_matching_type_by_key</a>(type_name_stored);</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  <span class="comment">// call_deserialize returns void*, so cast to T* and return</span></div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;  T_data = <span class="keyword">static_cast&lt;</span>T*<span class="keyword">&gt;</span>(match_elem-&gt;call_deserialize(reader));</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;  <span class="keywordflow">return</span> reader;</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;}</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> Reader, <span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160;<span class="keyword">typename</span> std::enable_if&lt;std::is_base_of&lt;StreamReader, Reader&gt;::value&gt;::type</div>
+<div class="line"><a name="l00119"></a><span class="lineno"><a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">  119</a></span>&#160;<a class="code" href="streamreader_8hpp.html#adbb129b5642161bfb1bb6faee2479931">deserialize</a>(Reader &amp; reader, T &amp; T_data)</div>
+<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;{</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;}</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 20 2012 23:17:20 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Dec 5 2012 18:05:09 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

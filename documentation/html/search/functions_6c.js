@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load',['load',['../classStreamReader.html#a89b0321e6d8e84ae82bee0b19a018f1f',1,'StreamReader']]]
+  ['load',['load',['../classBinaryStreamReader.html#a93b9dcaa9c42c19f8856f9651e856b70',1,'BinaryStreamReader::load(T &amp;T_data)'],['../classBinaryStreamReader.html#a4c6b246067903cf9e603aafd749eaaba',1,'BinaryStreamReader::load(T &amp;T_data)'],['../classBinaryStreamReader.html#a1df837b3e625039fa79c18e51ec59ee6',1,'BinaryStreamReader::load(std::string &amp;string_data)'],['../classTextStreamReader.html#a7d18988bc685b7e2d5b91212cab3b9fa',1,'TextStreamReader::load(T &amp;T_data)'],['../classTextStreamReader.html#a87ecb3c6d6b19ba7ac850515487a329b',1,'TextStreamReader::load(T &amp;T_data)'],['../classTextStreamReader.html#aee65f69873c70accbed8fc9530a2005a',1,'TextStreamReader::load(std::string &amp;string_data)'],['../classTextStreamReader.html#a502063346db2fd9e9c38633402231171',1,'TextStreamReader::load(char *&amp;cstring_data)']]]
 ];
