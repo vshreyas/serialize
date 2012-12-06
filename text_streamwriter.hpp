@@ -21,6 +21,7 @@
 #include <typeinfo>
 
 #include "streamwriter.hpp"
+#include "stl_serialize.hpp"
 #include "types.hpp"
 
 /**

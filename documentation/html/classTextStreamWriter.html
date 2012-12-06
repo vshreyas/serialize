@@ -88,6 +88,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="title">TextStreamWriter Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="text__streamwriter_8hpp_source.html">text_streamwriter.hpp</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for TextStreamWriter:</div>
 <div class="dyncontent">
@@ -100,85 +102,482 @@ Inheritance diagram for TextStreamWriter:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a31f994d04173cb8c4c84c79cef03a79a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a31f994d04173cb8c4c84c79cef03a79a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TextStreamWriter</b> (std::ostream &amp;)</td></tr>
-<tr class="separator:a31f994d04173cb8c4c84c79cef03a79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a394477876f724899622a199a605ea7ce"><td class="memTemplParams" colspan="2"><a class="anchor" id="a394477876f724899622a199a605ea7ce"></a>
-template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a9609d66d487ef6a93fa284b21f444082"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a9609d66d487ef6a93fa284b21f444082">TextStreamWriter</a> (ostream &amp;m_stream)</td></tr>
+<tr class="separator:a9609d66d487ef6a93fa284b21f444082"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25cb6bca90b5b0fda056292b890ddec3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a25cb6bca90b5b0fda056292b890ddec3">~TextStreamWriter</a> ()</td></tr>
+<tr class="separator:a25cb6bca90b5b0fda056292b890ddec3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a394477876f724899622a199a605ea7ce"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a394477876f724899622a199a605ea7ce"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
 &lt; std::is_fundamental&lt; T &gt;<br class="typebreak"/>
-::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>save</b> (const T &amp;T_data)</td></tr>
+::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a394477876f724899622a199a605ea7ce">save</a> (const T &amp;T_data)</td></tr>
 <tr class="separator:a394477876f724899622a199a605ea7ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab65a7e1a25b7542915d47e4ab37bc301"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab65a7e1a25b7542915d47e4ab37bc301"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>save</b> (const std::string &amp;string_data)</td></tr>
+<tr class="memitem:ab65a7e1a25b7542915d47e4ab37bc301"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#ab65a7e1a25b7542915d47e4ab37bc301">save</a> (const std::string &amp;string_data)</td></tr>
 <tr class="separator:ab65a7e1a25b7542915d47e4ab37bc301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa17932310abd856df57e8990e7583d77"><td class="memTemplParams" colspan="2"><a class="anchor" id="aa17932310abd856df57e8990e7583d77"></a>
-template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac5726025951f38b14e7366e81d8ba803"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#ac5726025951f38b14e7366e81d8ba803">save</a> (const char *cstring_data)</td></tr>
+<tr class="separator:ac5726025951f38b14e7366e81d8ba803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa17932310abd856df57e8990e7583d77"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:aa17932310abd856df57e8990e7583d77"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_class<br class="typebreak"/>
-&lt; T &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>save</b> (const T &amp;T_data)</td></tr>
+&lt; T &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#aa17932310abd856df57e8990e7583d77">save</a> (const T &amp;T_data)</td></tr>
 <tr class="separator:aa17932310abd856df57e8990e7583d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af03576be9ce162d447f3671fbc49b0fa"><td class="memTemplParams" colspan="2"><a class="anchor" id="af03576be9ce162d447f3671fbc49b0fa"></a>
-template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a849b320a3c8aaade34d9f27a976ebc26"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a849b320a3c8aaade34d9f27a976ebc26"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; std::is_polymorphic&lt; T &gt;<br class="typebreak"/>
+::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a849b320a3c8aaade34d9f27a976ebc26">save</a> (T *T_data)</td></tr>
+<tr class="separator:a849b320a3c8aaade34d9f27a976ebc26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af03576be9ce162d447f3671fbc49b0fa"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:af03576be9ce162d447f3671fbc49b0fa"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if&lt; std::is_array<br class="typebreak"/>
-&lt; T &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><b>save</b> (const T &amp;T_data)</td></tr>
+&lt; T &gt;::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#af03576be9ce162d447f3671fbc49b0fa">save</a> (const T &amp;T_data)</td></tr>
 <tr class="separator:af03576be9ce162d447f3671fbc49b0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classStreamWriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classStreamWriter')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classStreamWriter.html">StreamWriter</a></td></tr>
-<tr class="memitem:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab0b90dee96357cc9b5d4d8d53782176"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StreamWriter</b> (std::ostream &amp;)</td></tr>
-<tr class="separator:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe6895118a8daec5b86297f4ebb35f0c inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afe6895118a8daec5b86297f4ebb35f0c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>set_stream</b> (std::ostream &amp;)</td></tr>
-<tr class="separator:afe6895118a8daec5b86297f4ebb35f0c inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93349af5376b5230613b9c36bc25dbc9 inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a93349af5376b5230613b9c36bc25dbc9"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_stream</b> ()</td></tr>
-<tr class="separator:a93349af5376b5230613b9c36bc25dbc9 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab0b90dee96357cc9b5d4d8d53782176"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StreamWriter</b> (std::ostream &amp;)</td></tr>
-<tr class="separator:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aab0b90dee96357cc9b5d4d8d53782176"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>StreamWriter</b> (std::ostream &amp;)</td></tr>
-<tr class="separator:aab0b90dee96357cc9b5d4d8d53782176 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b21f34d31b51e6cadfa180e189b8c52 inherit pub_methods_classStreamWriter"><td class="memTemplParams" colspan="2"><a class="anchor" id="a5b21f34d31b51e6cadfa180e189b8c52"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a5b21f34d31b51e6cadfa180e189b8c52 inherit pub_methods_classStreamWriter"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>save</b> (const T &amp;)</td></tr>
-<tr class="separator:a5b21f34d31b51e6cadfa180e189b8c52 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add1a660e93f98f8975310d4aa449dfbf inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStreamWriter.html#add1a660e93f98f8975310d4aa449dfbf">StreamWriter</a> (ostream &amp;m_stream)</td></tr>
+<tr class="separator:add1a660e93f98f8975310d4aa449dfbf inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e1071c29521574f6ebadb506587935 inherit pub_methods_classStreamWriter"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStreamWriter.html#a99e1071c29521574f6ebadb506587935">~StreamWriter</a> ()=0</td></tr>
+<tr class="separator:a99e1071c29521574f6ebadb506587935 inherit pub_methods_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a818981a40a8533526cca2ac4076f367f"><td class="memTemplParams" colspan="2"><a class="anchor" id="a818981a40a8533526cca2ac4076f367f"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a818981a40a8533526cca2ac4076f367f"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><b>type_and_delim</b> (const T &amp;)</td></tr>
+<tr class="memitem:a818981a40a8533526cca2ac4076f367f"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a818981a40a8533526cca2ac4076f367f"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a818981a40a8533526cca2ac4076f367f">type_and_delim</a> (const T &amp;)</td></tr>
 <tr class="separator:a818981a40a8533526cca2ac4076f367f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90394b000d4e28d34fa18c552540a2f3"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a90394b000d4e28d34fa18c552540a2f3"><td class="memTemplItemLeft" align="right" valign="top">std::enable_if<br class="typebreak"/>
+&lt; std::is_polymorphic&lt; T &gt;<br class="typebreak"/>
+::value &gt;::type&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a90394b000d4e28d34fa18c552540a2f3">write_type</a> (T *&amp;T_data)</td></tr>
+<tr class="separator:a90394b000d4e28d34fa18c552540a2f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab4f08e83ff5f439f4a866c517cb65ea8"><td class="memTemplParams" colspan="2"><a class="anchor" id="ab4f08e83ff5f439f4a866c517cb65ea8"></a>
 template&lt;class T &gt; </td></tr>
 <tr class="memitem:ab4f08e83ff5f439f4a866c517cb65ea8"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>write_type</b> (const T &amp;T_data)</td></tr>
 <tr class="separator:ab4f08e83ff5f439f4a866c517cb65ea8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a253eb9b577af36d9c3a0c77a457367b2"><td class="memTemplParams" colspan="2"><a class="anchor" id="a253eb9b577af36d9c3a0c77a457367b2"></a>
-template&lt;class T &gt; </td></tr>
-<tr class="memitem:a253eb9b577af36d9c3a0c77a457367b2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>write_data</b> (const T &amp;T_data)</td></tr>
+<tr class="memitem:a253eb9b577af36d9c3a0c77a457367b2"><td class="memTemplParams" colspan="2">template&lt;class T &gt; </td></tr>
+<tr class="memitem:a253eb9b577af36d9c3a0c77a457367b2"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a253eb9b577af36d9c3a0c77a457367b2">write_data</a> (const T &amp;T_data)</td></tr>
 <tr class="separator:a253eb9b577af36d9c3a0c77a457367b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a00e20e2b5680c5db12d739d9872ce2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4a00e20e2b5680c5db12d739d9872ce2"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>write_data</b> (const std::string &amp;string_data)</td></tr>
+<tr class="memitem:ab5c2e6f00609ec7468f4a543e6fdf305"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#ab5c2e6f00609ec7468f4a543e6fdf305">write_data</a> (const char *cstring_data)</td></tr>
+<tr class="separator:ab5c2e6f00609ec7468f4a543e6fdf305"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a00e20e2b5680c5db12d739d9872ce2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTextStreamWriter.html#a4a00e20e2b5680c5db12d739d9872ce2">write_data</a> (const std::string &amp;string_data)</td></tr>
 <tr class="separator:a4a00e20e2b5680c5db12d739d9872ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_classStreamWriter"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classStreamWriter')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classStreamWriter.html">StreamWriter</a></td></tr>
-<tr class="memitem:a57e5ca3d4f73a3cb605d1e0fec384363 inherit pro_attribs_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57e5ca3d4f73a3cb605d1e0fec384363"></a>
-std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>stream</b></td></tr>
-<tr class="separator:a57e5ca3d4f73a3cb605d1e0fec384363 inherit pro_attribs_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e4ebce5f84852b5c651b9e8d8d9afc1 inherit pro_attribs_classStreamWriter"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3e4ebce5f84852b5c651b9e8d8d9afc1"></a>
-std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><b>stream</b></td></tr>
+<tr class="memitem:a3e4ebce5f84852b5c651b9e8d8d9afc1 inherit pro_attribs_classStreamWriter"><td class="memItemLeft" align="right" valign="top">std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classStreamWriter.html#a3e4ebce5f84852b5c651b9e8d8d9afc1">stream</a></td></tr>
 <tr class="separator:a3e4ebce5f84852b5c651b9e8d8d9afc1 inherit pro_attribs_classStreamWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Serializes data in a text format. Format chosen is: one item per line. </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a9609d66d487ef6a93fa284b21f444082"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TextStreamWriter::TextStreamWriter </td>
+          <td>(</td>
+          <td class="paramtype">ostream &amp;&#160;</td>
+          <td class="paramname"><em>m_stream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Needs an opened ostream object.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">m_stream</td><td>Open ostream object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a25cb6bca90b5b0fda056292b890ddec3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">TextStreamWriter::~TextStreamWriter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Trivial destructor </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a394477876f724899622a199a605ea7ce"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt;std::is_fundamental&lt;T&gt;::value&gt;::type TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write fundamental types.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>any fundamental type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab65a7e1a25b7542915d47e4ab37bc301"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>string_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write string data</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string_data</td><td>given string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ac5726025951f38b14e7366e81d8ba803"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>cstring_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write char* data, interpreting it as a C-style string</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cstring_data</td><td>given char* </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="aa17932310abd856df57e8990e7583d77"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt;std::is_class&lt;T&gt;::value&gt;::type TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For a class, there is no `write_data'. Writing of the members depends on the user-defined `serialize' function.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>An object of class type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a849b320a3c8aaade34d9f27a976ebc26"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt;std::is_polymorphic&lt;T&gt;::value&gt;::type TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">T *&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For polymorphic types, writing of the type is mandatory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>Pointer to a polymorphic type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="af03576be9ce162d447f3671fbc49b0fa"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt;std::is_array&lt;T&gt;::value&gt;::type TextStreamWriter::save </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For arrays, format is: &lt;length&gt;&lt;elements&gt;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>an array </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a818981a40a8533526cca2ac4076f367f"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string TextStreamWriter::type_and_delim </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get the name of the type obtained by calling typeid.name. DEPRECATED - since types are no longer written for every object, and typeid is not portable.</p>
+<dl class="section return"><dt>Returns</dt><dd>type name followed by a space </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a253eb9b577af36d9c3a0c77a457367b2"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextStreamWriter::write_data </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For any type in general, &lt;data&gt;&lt;newline&gt;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>object to serialize </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab5c2e6f00609ec7468f4a543e6fdf305"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextStreamWriter::write_data </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>cstring_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write a given char*, assuming it to be a C-style string. Format: &lt;length&gt;&lt;one space&gt;=""&gt;&lt;cstring data&gt;=""&gt;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cstring_data</td><td>given char* whose data is to be written </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a4a00e20e2b5680c5db12d739d9872ce2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TextStreamWriter::write_data </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>string_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>For strings, format is: &lt;length&gt;&lt;one space&gt;=""&gt;&lt;string data&gt;=""&gt;</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">string_data</td><td>string to be serialized </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a90394b000d4e28d34fa18c552540a2f3"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;class T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::enable_if&lt;std::is_polymorphic&lt;T&gt;::value&gt;::type TextStreamWriter::write_type </td>
+          <td>(</td>
+          <td class="paramtype">T *&amp;&#160;</td>
+          <td class="paramname"><em>T_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Write the type of a given polymorphic object. The type is found from the global map of known types, where the key represents the type name.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T_data</td><td>a given object of the required type </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="text__streamwriter_8hpp_source.html">text_streamwriter.hpp</a></li>
-<li>text_streamwriter.cpp</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Nov 20 2012 23:17:20 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Wed Dec 5 2012 18:05:09 for C++ Serialization Library by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.2
 </small></address>

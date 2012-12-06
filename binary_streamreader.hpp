@@ -122,11 +122,14 @@ private:
    */
   void read_data(std::string & string_data)
   {
-    unsigned int size;
-    stream->read(reinterpret_cast<char*>(&size),sizeof(size));
-    std::vector<char> temp(size);
-    stream->read(&temp[0], size);
-    string_data.assign(&temp[0], size);
+    size_t len;
+    stream->read(reinterpret_cast<char*>(&len),sizeof(len));
+
+    char* s = new char[len + 1];
+    stream->read(s, len);
+    s[len] = '\0';
+    string_data = std::string(s, len);
+    delete[] s;
   }
 };
 

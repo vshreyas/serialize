@@ -1,7 +1,11 @@
 var searchData=
 [
-  ['stream',['stream',['../classStreamReader.html#a36801ca47878dbbfd2db8a3c4d0d89c8',1,'StreamReader::stream()'],['../classStreamReader.html#ac8fb8d8e1c0bf6080e40b2cc8fa19e90',1,'StreamReader::stream()']]],
-  ['streamreader',['StreamReader',['../classStreamReader.html',1,'StreamReader'],['../classStreamReader.html#a2d88e8e41754d80ba55ae5d3b284ee47',1,'StreamReader::StreamReader()']]],
+  ['save',['save',['../classTextStreamWriter.html#a394477876f724899622a199a605ea7ce',1,'TextStreamWriter::save(const T &amp;T_data)'],['../classTextStreamWriter.html#ab65a7e1a25b7542915d47e4ab37bc301',1,'TextStreamWriter::save(const std::string &amp;string_data)'],['../classTextStreamWriter.html#ac5726025951f38b14e7366e81d8ba803',1,'TextStreamWriter::save(const char *cstring_data)'],['../classTextStreamWriter.html#aa17932310abd856df57e8990e7583d77',1,'TextStreamWriter::save(const T &amp;T_data)'],['../classTextStreamWriter.html#a849b320a3c8aaade34d9f27a976ebc26',1,'TextStreamWriter::save(T *T_data)'],['../classTextStreamWriter.html#af03576be9ce162d447f3671fbc49b0fa',1,'TextStreamWriter::save(const T &amp;T_data)']]],
+  ['serialize',['serialize',['../stl__serialize_8hpp.html#aa0b2abc3b83bcfe35d3ab4ee47a5e582',1,'serialize(Writer &amp;w, const std::vector&lt; T &gt; &amp;vec_data):&#160;stl_serialize.hpp'],['../stl__serialize_8hpp.html#af04c97a56993f84a791ea751937bed41',1,'serialize(Writer &amp;w, const std::pair&lt; T1, T2 &gt; &amp;pair_data):&#160;stl_serialize.hpp'],['../stl__serialize_8hpp.html#ae5ac754f6df43b611ea1ae250054a7ef',1,'serialize(Writer &amp;w, const std::map&lt; T1, T2 &gt; &amp;map_data):&#160;stl_serialize.hpp'],['../streamwriter_8hpp.html#ae909992f18f0690593c0915a3f2ac9b2',1,'serialize(Writer &amp;writer, const T &amp;T_data):&#160;streamwriter.hpp']]],
+  ['stl_5fserialize_2ehpp',['stl_serialize.hpp',['../stl__serialize_8hpp.html',1,'']]],
+  ['stream',['stream',['../classStreamReader.html#ac8fb8d8e1c0bf6080e40b2cc8fa19e90',1,'StreamReader::stream()'],['../classStreamWriter.html#a3e4ebce5f84852b5c651b9e8d8d9afc1',1,'StreamWriter::stream()']]],
+  ['streamreader',['StreamReader',['../classStreamReader.html',1,'StreamReader'],['../classStreamReader.html#a5ffff1f45b038fd9a31aea483bd0f403',1,'StreamReader::StreamReader()']]],
   ['streamreader_2ehpp',['streamreader.hpp',['../streamreader_8hpp.html',1,'']]],
-  ['streamwriter',['StreamWriter',['../classStreamWriter.html',1,'']]]
+  ['streamwriter',['StreamWriter',['../classStreamWriter.html',1,'StreamWriter'],['../classStreamWriter.html#add1a660e93f98f8975310d4aa449dfbf',1,'StreamWriter::StreamWriter()']]],
+  ['streamwriter_2ehpp',['streamwriter.hpp',['../streamwriter_8hpp.html',1,'']]]
 ];

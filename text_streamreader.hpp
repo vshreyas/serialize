@@ -19,6 +19,7 @@
 #include <typeinfo>
 
 #include "streamreader.hpp"
+#include "stl_serialize.hpp"
 
 /**
  * Reads from a stream with data serialized using TextStreamWriter.
