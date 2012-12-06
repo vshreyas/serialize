@@ -151,7 +151,6 @@ private:
     cstring_data = s;
 
     checkandthrowBasicException(stream);
->>>>>>> exceptions
   }
 
 };
