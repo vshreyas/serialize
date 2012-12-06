@@ -1,3 +1,12 @@
+/**
+ * @file   exceptions.hpp
+ * @author Raghdah
+ * 
+ * @brief Defines exception classes which may be thrown by the
+ * StreamReader or StreamWriter objects.
+ * 
+ */
+
 #ifndef EXCEPTION_HPP
 #define EXCEPTION_HPP
 

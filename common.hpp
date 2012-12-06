@@ -1,8 +1,4 @@
 /**
- * @file   common.hpp
- * @author Shashwat Lal Das <shashwat@mashed-potato>
- * @date   Sun Nov 18 15:22:11 2012
- *
  * @brief Contains common constants and functions to be used by the
  * rest of the library. If this file becomes too large, it may be
  * split later.
